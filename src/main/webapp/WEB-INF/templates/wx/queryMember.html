@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>会员查询</title>
+</head>
+<body>
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+    <div style="width: 100%;height: 95.7%;background-color: #A8A8A8">
+            <div id="container" style="width: 50%; height: auto; margin: 0 auto"></div>
+            <script language="JavaScript">
+                $(document).ready(function() {
+                    var chart = {
+                        type: 'column'
+                    };
+                    var title = {
+                        text: '会员预览'
+                    };
+                    var subtitle = {
+                        text: 'Source: luer.com'
+                    };
+                    var xAxis = {
+                        categories: ['实时信息'/*,'二月份','三月份','四月份','五月份','六月份','七月份','八月份','九月份','十月份','十一月份','十二月份'*/],
+                        crosshair: true
+                    };
+                    var yAxis = {
+                        min: 0,
+                        title: {
+                            text: '会员数(位)'
+                        }
+                    };
+                    var tooltip = {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f} 位</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    };
+                    var plotOptions = {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0
+                        }
+                    };
+                    var credits = {
+                        enabled: false
+                    };
+
+                    var series= [{
+                        name: '零食多',
+                        data: [49/*, 71, 106, 129, 144, 176, 135, 148, 216, 194, 95, 54*/]
+                    }, {
+                        name: '真锅煮茶',
+                        data: [83/*, 78, 98, 93, 106, 84, 105, 104, 91, 8, 10, 92*/]
+                    }, {
+                        name: '金城制冷',
+                        data: [48/*, 38, 39, 41, 47, 48, 59, 59, 52, 65, 59, 51*/]
+                    }, {
+                        name: '星巴克',
+                        data: [42/*, 33, 34, 39, 52.6, 75, 57, 60, 47, 39, 46, 51*/]
+                    }];
+
+                    var json = {};
+                    json.chart = chart;
+                    json.title = title;
+                    json.subtitle = subtitle;
+                    json.tooltip = tooltip;
+                    json.xAxis = xAxis;
+                    json.yAxis = yAxis;
+                    json.series = series;
+                    json.plotOptions = plotOptions;
+                    json.credits = credits;
+                    $('#container').highcharts(json);
+
+                });
+            </script>
+    </div>
+</body>
+</html>

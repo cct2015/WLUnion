@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.luer.marketingSchemeManage.dao.MarketingPlanRecommendMapper" >
+    <resultMap id="BaseResultMap" type="com.luer.marketingSchemeManage.bean.MarketingPlanRecommend" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="plan_id" property="planId" jdbcType="VARCHAR" />
+        <result column="merchant_id" property="merchantId" jdbcType="VARCHAR" />
+        <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+        <result column="recommend_user" property="recommendUser" jdbcType="VARCHAR" />
+        <result column="receipt_user" property="receiptUser" jdbcType="VARCHAR" />
+        <result column="receipt_time" property="receiptTime" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="result" property="result" jdbcType="INTEGER" />
+        <result column="coupon_url" property="couponUrl" jdbcType="VARCHAR" />
+        <result column="companyName" property="companyName" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List" >
+        id, plan_id, merchant_id, add_time, recommend_user, receipt_user, receipt_time, status,
+        result, coupon_url
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.luer.marketingSchemeManage.bean.MarketingPlanRecommendExample" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from marketing_plan_recommend
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from marketing_plan_recommend
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from marketing_plan_recommend
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.luer.marketingSchemeManage.bean.MarketingPlanRecommendExample" >
+        delete from marketing_plan_recommend
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.luer.marketingSchemeManage.bean.MarketingPlanRecommend" >
+        insert into marketing_plan_recommend (id, plan_id, merchant_id,
+        add_time, recommend_user, receipt_user,
+        receipt_time, status, result,
+        coupon_url)
+        values (#{id,jdbcType=VARCHAR}, #{planId,jdbcType=VARCHAR}, #{merchantId,jdbcType=VARCHAR},
+        #{addTime,jdbcType=TIMESTAMP}, #{recommendUser,jdbcType=VARCHAR}, #{receiptUser,jdbcType=VARCHAR},
+        #{receiptTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{result,jdbcType=INTEGER},
+        #{couponUrl,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.luer.marketingSchemeManage.bean.MarketingPlanRecommend" >
+        insert into marketing_plan_recommend
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="planId != null" >
+                plan_id,
+            </if>
+            <if test="merchantId != null" >
+                merchant_id,
+            </if>
+            <if test="addTime != null" >
+                add_time,
+            </if>
+            <if test="recommendUser != null" >
+                recommend_user,
+            </if>
+            <if test="receiptUser != null" >
+                receipt_user,
+            </if>
+            <if test="receiptTime != null" >
+                receipt_time,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="result != null" >
+                result,
+            </if>
+            <if test="couponUrl != null" >
+                coupon_url,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="planId != null" >
+                #{planId,jdbcType=VARCHAR},
+            </if>
+            <if test="merchantId != null" >
+                #{merchantId,jdbcType=VARCHAR},
+            </if>
+            <if test="addTime != null" >
+                #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="recommendUser != null" >
+                #{recommendUser,jdbcType=VARCHAR},
+            </if>
+            <if test="receiptUser != null" >
+                #{receiptUser,jdbcType=VARCHAR},
+            </if>
+            <if test="receiptTime != null" >
+                #{receiptTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="result != null" >
+                #{result,jdbcType=INTEGER},
+            </if>
+            <if test="couponUrl != null" >
+                #{couponUrl,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.luer.marketingSchemeManage.bean.MarketingPlanRecommendExample" resultType="java.lang.Integer" >
+        select count(*) from marketing_plan_recommend
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map" >
+        update marketing_plan_recommend
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.planId != null" >
+                plan_id = #{record.planId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.merchantId != null" >
+                merchant_id = #{record.merchantId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.addTime != null" >
+                add_time = #{record.addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.recommendUser != null" >
+                recommend_user = #{record.recommendUser,jdbcType=VARCHAR},
+            </if>
+            <if test="record.receiptUser != null" >
+                receipt_user = #{record.receiptUser,jdbcType=VARCHAR},
+            </if>
+            <if test="record.receiptTime != null" >
+                receipt_time = #{record.receiptTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.status != null" >
+                status = #{record.status,jdbcType=INTEGER},
+            </if>
+            <if test="record.result != null" >
+                result = #{record.result,jdbcType=INTEGER},
+            </if>
+            <if test="record.couponUrl != null" >
+                coupon_url = #{record.couponUrl,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map" >
+        update marketing_plan_recommend
+        set id = #{record.id,jdbcType=VARCHAR},
+        plan_id = #{record.planId,jdbcType=VARCHAR},
+        merchant_id = #{record.merchantId,jdbcType=VARCHAR},
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
+        recommend_user = #{record.recommendUser,jdbcType=VARCHAR},
+        receipt_user = #{record.receiptUser,jdbcType=VARCHAR},
+        receipt_time = #{record.receiptTime,jdbcType=TIMESTAMP},
+        status = #{record.status,jdbcType=INTEGER},
+        result = #{record.result,jdbcType=INTEGER},
+        coupon_url = #{record.couponUrl,jdbcType=VARCHAR}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.luer.marketingSchemeManage.bean.MarketingPlanRecommend" >
+        update marketing_plan_recommend
+        <set >
+            <if test="planId != null" >
+                plan_id = #{planId,jdbcType=VARCHAR},
+            </if>
+            <if test="merchantId != null" >
+                merchant_id = #{merchantId,jdbcType=VARCHAR},
+            </if>
+            <if test="addTime != null" >
+                add_time = #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="recommendUser != null" >
+                recommend_user = #{recommendUser,jdbcType=VARCHAR},
+            </if>
+            <if test="receiptUser != null" >
+                receipt_user = #{receiptUser,jdbcType=VARCHAR},
+            </if>
+            <if test="receiptTime != null" >
+                receipt_time = #{receiptTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="result != null" >
+                result = #{result,jdbcType=INTEGER},
+            </if>
+            <if test="couponUrl != null" >
+                coupon_url = #{couponUrl,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.luer.marketingSchemeManage.bean.MarketingPlanRecommend" >
+    update marketing_plan_recommend
+    set plan_id = #{planId,jdbcType=VARCHAR},
+      merchant_id = #{merchantId,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      recommend_user = #{recommendUser,jdbcType=VARCHAR},
+      receipt_user = #{receiptUser,jdbcType=VARCHAR},
+      receipt_time = #{receiptTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      result = #{result,jdbcType=INTEGER},
+      coupon_url = #{couponUrl,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into marketing_plan_recommend
+        (id,plan_id,merchant_id,add_time,recommend_user,receipt_user,receipt_time,status,coupon_url)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.id,jdbcType=VARCHAR},#{item.planId,jdbcType=VARCHAR},
+            #{item.merchantId,jdbcType=VARCHAR},#{item.addTime,jdbcType=TIMESTAMP},
+            #{item.recommendUser,jdbcType=VARCHAR},#{item.receiptUser,jdbcType=VARCHAR},
+            #{item.receiptTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER},
+            #{item.couponUrl,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+    <!--拒绝或接受异业的营销方案-->
+    <update id="accptPlan" parameterType="com.luer.marketingSchemeManage.bean.MarketingPlanRecommend" >
+    update marketing_plan_recommend set status = #{status,jdbcType=INTEGER}
+    where plan_id = #{planId,jdbcType=VARCHAR} and merchant_id = #{merchantId,jdbcType=VARCHAR}
+  </update>
+    <select id="selectByPlanId" resultMap="BaseResultMap" parameterType="com.luer.marketingSchemeManage.bean.MarketingPlanRecommendExample">
+select mp.id, mp.plan_id, mp.merchant_id, mp.add_time, mp.recommend_user, mp.receipt_user, mp.receipt_time, mp.status,
+        mp.result, mp.coupon_url,mm.company_name as companyName
+        from marketing_plan_recommend mp left  join marketing_merchant mm on mp.merchant_id=mm.id
+        where mp.plan_id = #{plan_id,jdbcType=VARCHAR}
+    </select>
+</mapper>

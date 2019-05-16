@@ -1,0 +1,761 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.luer.marketingSchemeManage.dao.MarketingPlanMapper">
+    <resultMap id="BaseResultMap" type="com.luer.marketingSchemeManage.bean.MarketingPlan">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="is_different" property="isDifferent" jdbcType="INTEGER"/>
+        <result column="merchant_id" property="merchantId" jdbcType="VARCHAR"/>
+        <result column="district" property="district" jdbcType="VARCHAR"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+        <result column="province" property="province" jdbcType="VARCHAR"/>
+        <result column="country" property="country" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="checker" property="checker" jdbcType="VARCHAR"/>
+        <result column="add_time" property="addTime" jdbcType="TIMESTAMP"/>
+        <result column="add_user" property="addUser" jdbcType="VARCHAR"/>
+        <result column="last_update" property="lastUpdate" jdbcType="TIMESTAMP"/>
+        <result column="last_updater" property="lastUpdater" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP"/>
+        <result column="end_time" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="describe" property="describe" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="tell" property="tell" jdbcType="VARCHAR"/>
+        <result column="commission_type_one" property="commissionTypeOne" jdbcType="VARCHAR"/>
+        <result column="commission_type_two" property="commissionTypeTwo" jdbcType="VARCHAR"/>
+        <result column="commission_type_three" property="commissionTypeThree" jdbcType="VARCHAR"/>
+        <result column="coupon_type" property="couponType" jdbcType="VARCHAR"/>
+        <result column="preferential_way" property="preferentialWay" jdbcType="VARCHAR"/>
+        <result column="value_one" property="valueOne" jdbcType="VARCHAR"/>
+        <result column="value_two" property="valueTwo" jdbcType="VARCHAR"/>
+        <result column="value_tree" property="valueTree" jdbcType="VARCHAR"/>
+        <result column="other_descripe" property="otherDescripe" jdbcType="VARCHAR"/>
+        <result column="plan_status" property="planStatus" jdbcType="INTEGER"/>
+        <result column="merchant" property="merchant" jdbcType="VARCHAR"/>
+        <result column="usage_rule" property="usageRule" jdbcType="VARCHAR"/>
+        <result column="support_store" property="supportStore" jdbcType="VARCHAR"/>
+        <result column="coupons_number" property="couponsNumber" jdbcType="INTEGER"/>
+        <result column="merchantName" property="merchantName" jdbcType="VARCHAR"/>
+        <result column="coupon_url" property="couponUrl" jdbcType="VARCHAR"/>
+        <result column="coupons_source" property="couponsSource" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="MarketingPlanReport" type="com.luer.reportManage.bean.MarketingPlanReport">
+        <result column="id" property="id"></result>
+        <result column="planNumbers" property="planNumbers"></result>
+        <result column="name" property="name"></result>
+        <result column="parentName" property="parentName"></result>
+
+    </resultMap>
+    <select id="getMarketingPlanlower" resultMap="BaseResultMap" parameterType="java.util.List">
+        select mp.id, mp.title, mp.content, mp.is_different, mp.merchant_id, mp.district, mp.city, mp.province,
+        mp.country,
+        mp.remark, mp.checker, mp.add_time, mp.add_user, mp.last_update, mp.last_updater, mp.status, mp.begin_time,
+        mp.end_time,mp.`describe`, mp.`name`, mp.tell, mp.commission_type_one, mp.commission_type_two,
+        mp.commission_type_three,
+        mp.coupon_type, mp.preferential_way, mp.value_one, mp.value_two, mp.value_tree, mp.other_descripe,
+        mp.plan_status, mp.usage_rule, mp.support_store, mp.coupons_number,mp.country,mm.company_short as merchantName
+        from marketing_plan mp left join marketing_merchant mm on mp.merchant_id=mm.id
+        where merchant_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        /*order by mp.add_time desc;*/
+    </select>
+
+        <sql id="Example_Where_Clause">
+            <where>
+                <foreach collection="oredCriteria" item="criteria" separator="or">
+                    <if test="criteria.valid">
+                        <trim prefix="(" suffix=")" prefixOverrides="and">
+                            <foreach collection="criteria.criteria" item="criterion">
+                                <choose>
+                                    <when test="criterion.noValue">
+                                        and ${criterion.condition}
+                                    </when>
+                                    <when test="criterion.singleValue">
+                                        and ${criterion.condition} #{criterion.value}
+                                    </when>
+                                    <when test="criterion.betweenValue">
+                                        and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                    </when>
+                                    <when test="criterion.listValue">
+                                        and ${criterion.condition}
+                                        <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                                 separator=",">
+                                            #{listItem}
+                                        </foreach>
+                                    </when>
+                                </choose>
+                            </foreach>
+                        </trim>
+                    </if>
+                </foreach>
+            </where>
+        </sql>
+        <sql id="Update_By_Example_Where_Clause">
+            <where>
+                <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                    <if test="criteria.valid">
+                        <trim prefix="(" suffix=")" prefixOverrides="and">
+                            <foreach collection="criteria.criteria" item="criterion">
+                                <choose>
+                                    <when test="criterion.noValue">
+                                        and ${criterion.condition}
+                                    </when>
+                                    <when test="criterion.singleValue">
+                                        and ${criterion.condition} #{criterion.value}
+                                    </when>
+                                    <when test="criterion.betweenValue">
+                                        and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                    </when>
+                                    <when test="criterion.listValue">
+                                        and ${criterion.condition}
+                                        <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                                 separator=",">
+                                            #{listItem}
+                                        </foreach>
+                                    </when>
+                                </choose>
+                            </foreach>
+                        </trim>
+                    </if>
+                </foreach>
+            </where>
+        </sql>
+        <sql id="Base_Column_List">
+            id, title, content, is_different, merchant_id, district, city, province, country,
+            remark, checker, add_time, add_user, last_update, last_updater, status, begin_time,
+            end_time, `describe`, `name`, tell, commission_type_one, commission_type_two, commission_type_three,
+            coupon_type, preferential_way, value_one, value_two, value_tree, other_descripe,
+            plan_status, usage_rule, support_store, coupons_number, coupon_url, coupons_source
+        </sql>
+        <select id="selectByExample" resultMap="BaseResultMap"
+                parameterType="com.luer.marketingSchemeManage.bean.MarketingPlanExample">
+            select
+            <if test="distinct">
+                distinct
+            </if>
+            <include refid="Base_Column_List"/>
+            from marketing_plan
+            <if test="_parameter != null">
+                <include refid="Example_Where_Clause"/>
+            </if>
+            <if test="orderByClause != null">
+                order by add_time desc
+            </if>
+        </select>
+        <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+            select
+            <include refid="Base_Column_List"/>
+            from marketing_plan
+            where id = #{id,jdbcType=VARCHAR}
+        </select>
+        <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+            delete from marketing_plan
+            where id = #{id,jdbcType=VARCHAR}
+        </delete>
+        <delete id="deleteByExample" parameterType="com.luer.marketingSchemeManage.bean.MarketingPlanExample">
+            delete from marketing_plan
+            <if test="_parameter != null">
+                <include refid="Example_Where_Clause"/>
+            </if>
+        </delete>
+        <insert id="insert" parameterType="com.luer.marketingSchemeManage.bean.MarketingPlan">
+            insert into marketing_plan (id, title, content,
+            is_different, merchant_id, district,
+            city, province, country,
+            remark, checker, add_time,
+            add_user, last_update, last_updater,
+            status, begin_time, end_time,
+            `describe`, `name`, tell,
+            commission_type_one, commission_type_two, commission_type_three,
+            coupon_type, preferential_way, value_one,
+            value_two, value_tree, other_descripe,
+            plan_status, usage_rule, support_store,
+            coupons_number, coupon_url, coupons_source
+            )
+            values (#{id,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
+            #{isDifferent,jdbcType=INTEGER}, #{merchantId,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR},
+            #{city,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR},
+            #{remark,jdbcType=VARCHAR}, #{checker,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP},
+            #{addUser,jdbcType=VARCHAR}, #{lastUpdate,jdbcType=TIMESTAMP}, #{lastUpdater,jdbcType=VARCHAR},
+            #{status,jdbcType=INTEGER}, #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP},
+            #{describe,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{tell,jdbcType=VARCHAR},
+            #{commissionTypeOne,jdbcType=VARCHAR}, #{commissionTypeTwo,jdbcType=VARCHAR}, #{commissionTypeThree,jdbcType=VARCHAR},
+            #{couponType,jdbcType=VARCHAR}, #{preferentialWay,jdbcType=VARCHAR}, #{valueOne,jdbcType=VARCHAR},
+            #{valueTwo,jdbcType=VARCHAR}, #{valueTree,jdbcType=VARCHAR}, #{otherDescripe,jdbcType=VARCHAR},
+            #{planStatus,jdbcType=INTEGER}, #{usageRule,jdbcType=VARCHAR}, #{supportStore,jdbcType=VARCHAR},
+            #{couponsNumber,jdbcType=INTEGER}, #{couponUrl,jdbcType=VARCHAR}, #{couponsSource,jdbcType=INTEGER}
+            )
+        </insert>
+        <insert id="insertSelective" parameterType="com.luer.marketingSchemeManage.bean.MarketingPlan">
+            insert into marketing_plan
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="title != null">
+                    title,
+                </if>
+                <if test="content != null">
+                    content,
+                </if>
+                <if test="isDifferent != null">
+                    is_different,
+                </if>
+                <if test="merchantId != null">
+                    merchant_id,
+                </if>
+                <if test="district != null">
+                    district,
+                </if>
+                <if test="city != null">
+                    city,
+                </if>
+                <if test="province != null">
+                    province,
+                </if>
+                <if test="country != null">
+                    country,
+                </if>
+                <if test="remark != null">
+                    remark,
+                </if>
+                <if test="checker != null">
+                    checker,
+                </if>
+                <if test="addTime != null">
+                    add_time,
+                </if>
+                <if test="addUser != null">
+                    add_user,
+                </if>
+                <if test="lastUpdate != null">
+                    last_update,
+                </if>
+                <if test="lastUpdater != null">
+                    last_updater,
+                </if>
+                <if test="status != null">
+                    status,
+                </if>
+                <if test="beginTime != null">
+                    begin_time,
+                </if>
+                <if test="endTime != null">
+                    end_time,
+                </if>
+                <if test="describe != null">
+                    `describ`,
+                </if>
+                <if test="name != null">
+                    `name`,
+                </if>
+                <if test="tell != null">
+                    tell,
+                </if>
+                <if test="commissionTypeOne != null">
+                    commission_type_one,
+                </if>
+                <if test="commissionTypeTwo != null">
+                    commission_type_two,
+                </if>
+                <if test="commissionTypeThree != null">
+                    commission_type_three,
+                </if>
+                <if test="couponType != null">
+                    coupon_type,
+                </if>
+                <if test="preferentialWay != null">
+                    preferential_way,
+                </if>
+                <if test="valueOne != null">
+                    value_one,
+                </if>
+                <if test="valueTwo != null">
+                    value_two,
+                </if>
+                <if test="valueTree != null">
+                    value_tree,
+                </if>
+                <if test="otherDescripe != null">
+                    other_descripe,
+                </if>
+                <if test="planStatus != null">
+                    plan_status,
+                </if>
+                <if test="usageRule != null">
+                    usage_rule,
+                </if>
+                <if test="supportStore != null">
+                    support_store,
+                </if>
+                <if test="couponsNumber != null">
+                    coupons_number,
+                </if>
+                <if test="couponUrl != null">
+                    coupon_url,
+                </if>
+                <if test="couponsSource != null">
+                    coupons_source,
+                </if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id,jdbcType=VARCHAR},
+                </if>
+                <if test="title != null">
+                    #{title,jdbcType=VARCHAR},
+                </if>
+                <if test="content != null">
+                    #{content,jdbcType=VARCHAR},
+                </if>
+                <if test="isDifferent != null">
+                    #{isDifferent,jdbcType=INTEGER},
+                </if>
+                <if test="merchantId != null">
+                    #{merchantId,jdbcType=VARCHAR},
+                </if>
+                <if test="district != null">
+                    #{district,jdbcType=VARCHAR},
+                </if>
+                <if test="city != null">
+                    #{city,jdbcType=VARCHAR},
+                </if>
+                <if test="province != null">
+                    #{province,jdbcType=VARCHAR},
+                </if>
+                <if test="country != null">
+                    #{country,jdbcType=VARCHAR},
+                </if>
+                <if test="remark != null">
+                    #{remark,jdbcType=VARCHAR},
+                </if>
+                <if test="checker != null">
+                    #{checker,jdbcType=VARCHAR},
+                </if>
+                <if test="addTime != null">
+                    #{addTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="addUser != null">
+                    #{addUser,jdbcType=VARCHAR},
+                </if>
+                <if test="lastUpdate != null">
+                    #{lastUpdate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="lastUpdater != null">
+                    #{lastUpdater,jdbcType=VARCHAR},
+                </if>
+                <if test="status != null">
+                    #{status,jdbcType=INTEGER},
+                </if>
+                <if test="beginTime != null">
+                    #{beginTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="endTime != null">
+                    #{endTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="describe != null">
+                    #{describe,jdbcType=VARCHAR},
+                </if>
+                <if test="name != null">
+                    #{name,jdbcType=VARCHAR},
+                </if>
+                <if test="tell != null">
+                    #{tell,jdbcType=VARCHAR},
+                </if>
+                <if test="commissionTypeOne != null">
+                    #{commissionTypeOne,jdbcType=VARCHAR},
+                </if>
+                <if test="commissionTypeTwo != null">
+                    #{commissionTypeTwo,jdbcType=VARCHAR},
+                </if>
+                <if test="commissionTypeThree != null">
+                    #{commissionTypeThree,jdbcType=VARCHAR},
+                </if>
+                <if test="couponType != null">
+                    #{couponType,jdbcType=VARCHAR},
+                </if>
+                <if test="preferentialWay != null">
+                    #{preferentialWay,jdbcType=VARCHAR},
+                </if>
+                <if test="valueOne != null">
+                    #{valueOne,jdbcType=VARCHAR},
+                </if>
+                <if test="valueTwo != null">
+                    #{valueTwo,jdbcType=VARCHAR},
+                </if>
+                <if test="valueTree != null">
+                    #{valueTree,jdbcType=VARCHAR},
+                </if>
+                <if test="otherDescripe != null">
+                    #{otherDescripe,jdbcType=VARCHAR},
+                </if>
+                <if test="planStatus != null">
+                    #{planStatus,jdbcType=INTEGER},
+                </if>
+                <if test="usageRule != null">
+                    #{usageRule,jdbcType=VARCHAR},
+                </if>
+                <if test="supportStore != null">
+                    #{supportStore,jdbcType=VARCHAR},
+                </if>
+                <if test="couponsNumber != null">
+                    #{couponsNumber,jdbcType=INTEGER},
+                </if>
+                <if test="couponUrl != null">
+                    #{couponUrl,jdbcType=VARCHAR},
+                </if>
+                <if test="couponsSource != null">
+                    #{couponsSource,jdbcType=INTEGER},
+                </if>
+            </trim>
+        </insert>
+        <select id="countByExample" parameterType="com.luer.marketingSchemeManage.bean.MarketingPlanExample"
+                resultType="java.lang.Integer">
+            select count(*) from marketing_plan
+            <if test="_parameter != null">
+                <include refid="Example_Where_Clause"/>
+            </if>
+        </select>
+        <update id="updateByExampleSelective" parameterType="map">
+            update marketing_plan
+            <set>
+                <if test="record.id != null">
+                    id = #{record.id,jdbcType=VARCHAR},
+                </if>
+                <if test="record.title != null">
+                    title = #{record.title,jdbcType=VARCHAR},
+                </if>
+                <if test="record.content != null">
+                    content = #{record.content,jdbcType=VARCHAR},
+                </if>
+                <if test="record.isDifferent != null">
+                    is_different = #{record.isDifferent,jdbcType=INTEGER},
+                </if>
+                <if test="record.merchantId != null">
+                    merchant_id = #{record.merchantId,jdbcType=VARCHAR},
+                </if>
+                <if test="record.district != null">
+                    district = #{record.district,jdbcType=VARCHAR},
+                </if>
+                <if test="record.city != null">
+                    city = #{record.city,jdbcType=VARCHAR},
+                </if>
+                <if test="record.province != null">
+                    province = #{record.province,jdbcType=VARCHAR},
+                </if>
+                <if test="record.country != null">
+                    country = #{record.country,jdbcType=VARCHAR},
+                </if>
+                <if test="record.remark != null">
+                    remark = #{record.remark,jdbcType=VARCHAR},
+                </if>
+                <if test="record.checker != null">
+                    checker = #{record.checker,jdbcType=VARCHAR},
+                </if>
+                <if test="record.addTime != null">
+                    add_time = #{record.addTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="record.addUser != null">
+                    add_user = #{record.addUser,jdbcType=VARCHAR},
+                </if>
+                <if test="record.lastUpdate != null">
+                    last_update = #{record.lastUpdate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="record.lastUpdater != null">
+                    last_updater = #{record.lastUpdater,jdbcType=VARCHAR},
+                </if>
+                <if test="record.status != null">
+                    status = #{record.status,jdbcType=INTEGER},
+                </if>
+                <if test="record.beginTime != null">
+                    begin_time = #{record.beginTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="record.endTime != null">
+                    end_time = #{record.endTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="record.describe != null">
+                    `describe` = #{record.describe,jdbcType=VARCHAR},
+                </if>
+                <if test="record.name != null">
+                    `name` = #{record.name,jdbcType=VARCHAR},
+                </if>
+                <if test="record.tell != null">
+                    tell = #{record.tell,jdbcType=VARCHAR},
+                </if>
+                <if test="record.commissionTypeOne != null">
+                    commission_type_one = #{record.commissionTypeOne,jdbcType=VARCHAR},
+                </if>
+                <if test="record.commissionTypeTwo != null">
+                    commission_type_two = #{record.commissionTypeTwo,jdbcType=VARCHAR},
+                </if>
+                <if test="record.commissionTypeThree != null">
+                    commission_type_three = #{record.commissionTypeThree,jdbcType=VARCHAR},
+                </if>
+                <if test="record.couponType != null">
+                    coupon_type = #{record.couponType,jdbcType=VARCHAR},
+                </if>
+                <if test="record.preferentialWay != null">
+                    preferential_way = #{record.preferentialWay,jdbcType=VARCHAR},
+                </if>
+                <if test="record.valueOne != null">
+                    value_one = #{record.valueOne,jdbcType=VARCHAR},
+                </if>
+                <if test="record.valueTwo != null">
+                    value_two = #{record.valueTwo,jdbcType=VARCHAR},
+                </if>
+                <if test="record.valueTree != null">
+                    value_tree = #{record.valueTree,jdbcType=VARCHAR},
+                </if>
+                <if test="record.otherDescripe != null">
+                    other_descripe = #{record.otherDescripe,jdbcType=VARCHAR},
+                </if>
+                <if test="record.planStatus != null">
+                    plan_status = #{record.planStatus,jdbcType=INTEGER},
+                </if>
+                <if test="record.usageRule != null">
+                    usage_rule = #{record.usageRule,jdbcType=VARCHAR},
+                </if>
+                <if test="record.supportStore != null">
+                    support_store = #{record.supportStore,jdbcType=VARCHAR},
+                </if>
+                <if test="record.couponsNumber != null">
+                    coupons_number = #{record.couponsNumber,jdbcType=INTEGER},
+                </if>
+                <if test="record.couponUrl != null">
+                    coupon_url = #{record.couponUrl,jdbcType=VARCHAR},
+                </if>
+                <if test="record.couponsSource != null">
+                    coupons_source = #{record.couponsSource,jdbcType=INTEGER},
+                </if>
+            </set>
+            <if test="_parameter != null">
+                <include refid="Update_By_Example_Where_Clause"/>
+            </if>
+        </update>
+        <update id="updateByExample" parameterType="map">
+            update marketing_plan
+            set id = #{record.id,jdbcType=VARCHAR},
+            title = #{record.title,jdbcType=VARCHAR},
+            content = #{record.content,jdbcType=VARCHAR},
+            is_different = #{record.isDifferent,jdbcType=INTEGER},
+            merchant_id = #{record.merchantId,jdbcType=VARCHAR},
+            district = #{record.district,jdbcType=VARCHAR},
+            city = #{record.city,jdbcType=VARCHAR},
+            province = #{record.province,jdbcType=VARCHAR},
+            country = #{record.country,jdbcType=VARCHAR},
+            remark = #{record.remark,jdbcType=VARCHAR},
+            checker = #{record.checker,jdbcType=VARCHAR},
+            add_time = #{record.addTime,jdbcType=TIMESTAMP},
+            add_user = #{record.addUser,jdbcType=VARCHAR},
+            last_update = #{record.lastUpdate,jdbcType=TIMESTAMP},
+            last_updater = #{record.lastUpdater,jdbcType=VARCHAR},
+            status = #{record.status,jdbcType=INTEGER},
+            begin_time = #{record.beginTime,jdbcType=TIMESTAMP},
+            end_time = #{record.endTime,jdbcType=TIMESTAMP},
+            `describe` = #{record.describe,jdbcType=VARCHAR},
+            `name` = #{record.name,jdbcType=VARCHAR},
+            tell = #{record.tell,jdbcType=VARCHAR},
+            commission_type_one = #{record.commissionTypeOne,jdbcType=VARCHAR},
+            commission_type_two = #{record.commissionTypeTwo,jdbcType=VARCHAR},
+            commission_type_three = #{record.commissionTypeThree,jdbcType=VARCHAR},
+            coupon_type = #{record.couponType,jdbcType=VARCHAR},
+            preferential_way = #{record.preferentialWay,jdbcType=VARCHAR},
+            value_one = #{record.valueOne,jdbcType=VARCHAR},
+            value_two = #{record.valueTwo,jdbcType=VARCHAR},
+            value_tree = #{record.valueTree,jdbcType=VARCHAR},
+            other_descripe = #{record.otherDescripe,jdbcType=VARCHAR},
+            plan_status = #{record.planStatus,jdbcType=INTEGER},
+            usage_rule = #{record.usageRule,jdbcType=VARCHAR},
+            support_store = #{record.supportStore,jdbcType=VARCHAR},
+            coupons_number = #{record.couponsNumber,jdbcType=INTEGER},
+            coupon_url = #{record.couponUrl,jdbcType=VARCHAR},
+            coupons_source = #{record.couponsSource,jdbcType=INTEGER}
+            <if test="_parameter != null">
+                <include refid="Update_By_Example_Where_Clause"/>
+            </if>
+        </update>
+        <update id="updateByPrimaryKeySelective" parameterType="com.luer.marketingSchemeManage.bean.MarketingPlan">
+            update marketing_plan
+            <set>
+                <if test="title != null">
+                    title = #{title,jdbcType=VARCHAR},
+                </if>
+                <if test="content != null">
+                    content = #{content,jdbcType=VARCHAR},
+                </if>
+                <if test="isDifferent != null">
+                    is_different = #{isDifferent,jdbcType=INTEGER},
+                </if>
+                <if test="merchantId != null">
+                    merchant_id = #{merchantId,jdbcType=VARCHAR},
+                </if>
+                <if test="district != null">
+                    district = #{district,jdbcType=VARCHAR},
+                </if>
+                <if test="city != null">
+                    city = #{city,jdbcType=VARCHAR},
+                </if>
+                <if test="province != null">
+                    province = #{province,jdbcType=VARCHAR},
+                </if>
+                <if test="country != null">
+                    country = #{country,jdbcType=VARCHAR},
+                </if>
+                <if test="remark != null">
+                    remark = #{remark,jdbcType=VARCHAR},
+                </if>
+                <if test="checker != null">
+                    checker = #{checker,jdbcType=VARCHAR},
+                </if>
+                <if test="addTime != null">
+                    add_time = #{addTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="addUser != null">
+                    add_user = #{addUser,jdbcType=VARCHAR},
+                </if>
+                <if test="lastUpdate != null">
+                    last_update = #{lastUpdate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="lastUpdater != null">
+                    last_updater = #{lastUpdater,jdbcType=VARCHAR},
+                </if>
+                <if test="status != null">
+                    status = #{status,jdbcType=INTEGER},
+                </if>
+                <if test="beginTime != null">
+                    begin_time = #{beginTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="endTime != null">
+                    end_time = #{endTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="describe != null">
+                    `describe` = #{describe,jdbcType=VARCHAR},
+                </if>
+                <if test="name != null">
+                    `name` = #{name,jdbcType=VARCHAR},
+                </if>
+                <if test="tell != null">
+                    tell = #{tell,jdbcType=VARCHAR},
+                </if>
+                <if test="commissionTypeOne != null">
+                    commission_type_one = #{commissionTypeOne,jdbcType=VARCHAR},
+                </if>
+                <if test="commissionTypeTwo != null">
+                    commission_type_two = #{commissionTypeTwo,jdbcType=VARCHAR},
+                </if>
+                <if test="commissionTypeThree != null">
+                    commission_type_three = #{commissionTypeThree,jdbcType=VARCHAR},
+                </if>
+                <if test="couponType != null">
+                    coupon_type = #{couponType,jdbcType=VARCHAR},
+                </if>
+                <if test="preferentialWay != null">
+                    preferential_way = #{preferentialWay,jdbcType=VARCHAR},
+                </if>
+                <if test="valueOne != null">
+                    value_one = #{valueOne,jdbcType=VARCHAR},
+                </if>
+                <if test="valueTwo != null">
+                    value_two = #{valueTwo,jdbcType=VARCHAR},
+                </if>
+                <if test="valueTree != null">
+                    value_tree = #{valueTree,jdbcType=VARCHAR},
+                </if>
+                <if test="otherDescripe != null">
+                    other_descripe = #{otherDescripe,jdbcType=VARCHAR},
+                </if>
+                <if test="planStatus != null">
+                    plan_status = #{planStatus,jdbcType=INTEGER},
+                </if>
+                <if test="usageRule != null">
+                    usage_rule = #{usageRule,jdbcType=VARCHAR},
+                </if>
+                <if test="supportStore != null">
+                    support_store = #{supportStore,jdbcType=VARCHAR},
+                </if>
+                <if test="couponsNumber != null">
+                    coupons_number = #{couponsNumber,jdbcType=INTEGER},
+                </if>
+                <if test="couponUrl != null">
+                    coupon_url = #{couponUrl,jdbcType=VARCHAR},
+                </if>
+                <if test="couponsSource != null">
+                    coupons_source = #{couponsSource,jdbcType=INTEGER},
+                </if>
+            </set>
+            where id = #{id,jdbcType=VARCHAR}
+        </update>
+        <update id="updateByPrimaryKey" parameterType="com.luer.marketingSchemeManage.bean.MarketingPlan">
+            update marketing_plan
+            set title = #{title,jdbcType=VARCHAR},
+            content = #{content,jdbcType=VARCHAR},
+            is_different = #{isDifferent,jdbcType=INTEGER},
+            merchant_id = #{merchantId,jdbcType=VARCHAR},
+            district = #{district,jdbcType=VARCHAR},
+            city = #{city,jdbcType=VARCHAR},
+            province = #{province,jdbcType=VARCHAR},
+            country = #{country,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR},
+            checker = #{checker,jdbcType=VARCHAR},
+            add_time = #{addTime,jdbcType=TIMESTAMP},
+            add_user = #{addUser,jdbcType=VARCHAR},
+            last_update = #{lastUpdate,jdbcType=TIMESTAMP},
+            last_updater = #{lastUpdater,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            begin_time = #{beginTime,jdbcType=TIMESTAMP},
+            end_time = #{endTime,jdbcType=TIMESTAMP},
+            `describe` = #{describe,jdbcType=VARCHAR},
+            `name` = #{name,jdbcType=VARCHAR},
+            tell = #{tell,jdbcType=VARCHAR},
+            commission_type_one = #{commissionTypeOne,jdbcType=VARCHAR},
+            commission_type_two = #{commissionTypeTwo,jdbcType=VARCHAR},
+            commission_type_three = #{commissionTypeThree,jdbcType=VARCHAR},
+            coupon_type = #{couponType,jdbcType=VARCHAR},
+            preferential_way = #{preferentialWay,jdbcType=VARCHAR},
+            value_one = #{valueOne,jdbcType=VARCHAR},
+            value_two = #{valueTwo,jdbcType=VARCHAR},
+            value_tree = #{valueTree,jdbcType=VARCHAR},
+            other_descripe = #{otherDescripe,jdbcType=VARCHAR},
+            plan_status = #{planStatus,jdbcType=INTEGER},
+            usage_rule = #{usageRule,jdbcType=VARCHAR},
+            support_store = #{supportStore,jdbcType=VARCHAR},
+            coupons_number = #{couponsNumber,jdbcType=INTEGER},
+            coupon_url = #{couponUrl,jdbcType=VARCHAR},
+            coupons_source = #{couponsSource,jdbcType=INTEGER}
+            where id = #{id,jdbcType=VARCHAR}
+        </update>
+
+        <update id="couponMarketingPlan">
+        update  marketing_plan set coupon_url=#{couponUrl,jdbcType=VARCHAR},coupons_source = #{couponsSource,jdbcType=INTEGER} where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <select id="getMarketingPlanList" resultMap="BaseResultMap">
+        SELECT * FROM marketing_plan WHERE  merchant_id =#{merchant_id}
+    </select>
+    <select id="getMarketingPlanExamine" resultMap="BaseResultMap">
+        SELECT * FROM marketing_plan WHERE  merchant_id =#{merchant_id}
+    </select>
+
+    <select id="selectByStatus" resultMap="BaseResultMap">
+        SELECT * FROM marketing_plan WHERE    status = #{status,jdbcType=INTEGER} order by add_time desc
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT * FROM marketing_plan order by add_time desc
+    </select>
+    <select id="getCompanyHistoryPlans" resultMap="MarketingPlanReport">
+        select count(p.id) as planNumbers, p.merchant_id as id,m.company_name as `name`,t.company_name as parentName FROM marketing_plan  p
+        LEFT JOIN marketing_merchant m on p.merchant_id=m.id
+        LEFT JOIN marketing_merchant t on m.parent_id=t.id WHERE p.plan_status=5 GROUP BY p.merchant_id
+    </select>
+
+    <update id="updatePlanStatusById" >
+        update marketing_plan
+        <set>
+              plan_status = #{planStatus,jdbcType=INTEGER},
+        </set>
+       where id= #{id}
+    </update>
+    </mapper>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <link href="../static/js/summernote/summernote.css" rel="stylesheet"/>
+    <link href="../static/js/summernote/summernote-bs3.css" rel="stylesheet"/>
+    <script src="../static/js/summernote/summernote.min.js"></script>
+    <script src="../static/js/summernote/summernote-zh-CN.js"></script>
+
+    <meta charset="UTF-8"/>
+    <title>提出问题</title>
+
+</head>
+<script>
+    $("#summernote").summernote({
+        lang: 'zh-CN',
+        height: '380',
+        width:'780'
+    });
+
+</script>
+<body >
+<div class="container body" style="z-index: -1">
+    <div class="container" id="container" style="margin-bottom: 0px">
+        <form id="myform" class="myform">
+            <input type="hidden" id="id" name="id" value="0"/>
+        <div class="row" style="width: 100%">
+            <div class="form-group col-md-6" style=" width: 1000px;">
+                <label for="question" class="col-sm-4 control-label" style="font-size: 14px; width: 135px;">提出问题:</label>
+                <div class="col-sm-5" style="font-size: 14px;width: 806px;" >
+                    <input type="text" id="question" name="question" value="" style="width: 100%"/>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="width: 100%;display:block "  id="contentDiv">
+            <div class="form-group col-md-6" style="width: 100%;margin-bottom: 0px;">
+                <label class="col-sm-4 control-label" style="font-size: 14px; width: 135px;">问题回答的内容:</label>
+                <div class="col-sm-5" style="font-size: 14px;width: 650px;margin-bottom: 0px">
+                    <input id="answer" name="answer" hidden="hidden"/>
+                    <div id="summernote"  style="margin-bottom: 0px"></div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

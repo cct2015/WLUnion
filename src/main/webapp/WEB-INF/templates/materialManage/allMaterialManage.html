@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .modal .login-dialog {
+            width: 900px;
+            margin-left: 40%;
+            margin-top: 10px;
+        }
+
+        .select {
+            width: 260px;
+            height: 30px;
+        }
+
+        .title {
+            display: inline;
+            width: 80px;
+            float: left;
+            font-size: 15px;
+            vertical-align: center;
+            line-height: 30px;
+            padding-left: 10px;
+        }
+
+        .item1 {
+            display: inline;
+            width: 345px;
+            float: left;
+        }
+
+        .item2 {
+            display: inline;
+            width: 200px;
+            float: left;
+        }
+
+        .item3 {
+            display: inline;
+            width: 92px;
+            float: left;
+            margin-left: 10px
+        }
+
+        .col1 {
+            width: 23.5%;
+            float: left;
+            display: inline;
+        }
+
+        .col2 {
+            width: 18.4%;
+            float: left;
+            display: inline;
+
+        }
+
+        .separated {
+            width: 2%;
+            float: left;
+            display: inline;
+        }
+    </style>
+
+    <title>图文管理</title>
+</head>
+<body class="nav-md">
+<div class="right_col" role="main">
+    <div class="container body">
+        <div class="x_title">
+            <h2>素材管理</h2>
+
+            <div class="clearfix"></div>
+        </div>
+        <div class="row" style="height: 40px">
+            <div class="item1">
+                <div class="title">
+                    公众号：
+                </div>
+                <select id="appId" name="appId" th:each="item,itemStat:${appIdList}" class="select">
+                    <option th:value="${item.appId}" th:selected="${itemStat.index}==0"
+                            th:text="${item.appName}"></option>
+                </select>
+            </div>
+
+            <div class="item2">
+                <div class="title" style="width: 90px">
+                    信息类别：
+                </div>
+                <select id="msgtype" name="msgtype" class="select" style="width: 100px;">
+                    <option value="news" selected="selected">图文</option>
+                    <option value="image">图片</option>
+                    <option value="voice">语音</option>
+                    <option value="video">视频</option>
+                </select>
+            </div>
+
+            <div class="item3">
+                <input type="button" value="查 询" onclick="Query();" style="width: 90px;height: 30px; "
+                       class="icon-search"/>
+            </div>
+        </div>
+        <!--<div class="row" style="height: 30px">-->
+            <!--<textarea rows="20" id="accesstoken" cols="105" style="width: 100%"></textarea>-->
+        <!--</div>-->
+         <div class="container" id="container1" style="display: block;"></div>
+
+</div>
+</div>
+<script th:inline="javascript">
+    function DateFormat(date,fmt)
+    {
+        var o = {
+            "M+": date.getMonth() + 1,                 //月份
+            "d+": date.getDate(),                    //日
+            "h+": date.getHours(),                   //小时
+            "m+": date.getMinutes(),                 //分
+            "s+": date.getSeconds(),                 //秒
+            "q+": Math.floor((date.getMonth() + 3) / 3), //季度
+            "S": date.getMilliseconds()             //毫秒
+        };
+        if (/(y+)/.test(fmt))
+            fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt))
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+    function Query() {
+        var appId = $('#appId').val();
+        var msgtype = $('#msgtype').val();
+        $("#container1").html('');
+        var offset = 0;
+        $.ajax({
+            url: "/materialManage/queryMaterialList",
+            dataType: 'json',
+            cache: false,
+            data: {appId: appId, msgtype: msgtype, offset: offset},
+            type: 'POST',
+            contentType: 'application/x-www-form-urlencoded;charset=UTF-8',//送到后台的中文数据就不会出现乱码
+            success: function (result) {
+                var Str = JSON.stringify(result);
+                if (Str == "-444") {
+                       getCode("check", "获得永久素材失败");
+                }
+               else {
+                    if (msgtype == "news") {
+                            getNewsMaterialList(result);
+                    }
+                    else {
+                            getOtherMaterialList(result);
+                    }
+                }
+                },
+            error: function (status, e) {
+                alert("系统错误: " + e);
+            }
+        });
+
+    }
+
+    $(function () {
+       Query();
+    });
+
+    function getOtherMaterialList(result) {
+        var items = result.item;
+        var html = "";
+        var balance = -1;
+        var url = "";
+        var length=items.length;
+       // var currIndex = -1;
+        $.each(items, function (index, item) {
+           // if (item.name == "CropImage") return;
+          //  currIndex++;
+            url = "http://img01.store.sogou.com/net/a/04/link?appid=100520029&url=" + item.url;
+            var date = new Date(item.update_time);
+            if(length-1==index) {
+                html += "<div class=\"col-sm-6 col-md-3\">"
+                    + "<div class=\"thumbnail\" style=\"height: 285px\">"
+                    + "<img style=\"margin-top: 5px\" src=\"" + url + "\" alt=\"\"/>"
+                    + "<div class=\"caption\" style=\"margin-top: 5px\">"
+                    + "<p style=\"height: 25px\">" + item.name + "</p>"
+                    + "<p style=\"margin-top: 10px\">"
+                    + "<label>最新更改于" + DateFormat(date,'yyyy年MM月dd日hh时mm分') + "</label>"
+                    + "<a href=\"#\" class=\"btn btn-default\" role=\"button\"> 编辑 </a>"
+                    + "<a href=\"#\" class=\"btn btn-default\" role=\"button\"> 删除 </a>"
+                    + "</p>"
+                    + "</div>"
+                    + "</div>"
+                    + "</div>"
+                    + "</div>"
+            }
+            else {
+                balance = index % 4;
+                if (balance == 0) {
+                    html += "<div class=\"row\">"
+                        + "<div class=\"col-sm-6 col-md-3\">"
+                        + "<div class=\"thumbnail\" style=\"height: 285px\">"
+                        + "<img style=\"margin-top: 5px\" src=\"" + url + "\" alt=\"\"/>"
+                        + "<div class=\"caption\" style=\"margin-top: 5px\">"
+                        + "<p style=\"height: 25px\">" + item.name + "</p>"
+                        + "<p style=\"margin-top: 10px\">"
+                        + "<label>最新更改于" + DateFormat(date,'yyyy年MM月dd日hh时mm分') + "</label>"
+                        + "<a href=\"#\" class=\"btn btn-default\" role=\"button\">编辑</a>"
+                        + "<a href=\"#\" class=\"btn btn-default\" role=\"button\">删除</a>"
+                        + "</p>"
+                        + "</div>"
+                        + "</div>"
+                        + "</div>"
+
+                }
+                else if (balance == 3) {
+                    html += "<div class=\"col-sm-6 col-md-3\">"
+                        + "<div class=\"thumbnail\" style=\"height: 285px\">"
+                        + "<img style=\"margin-top: 5px\" src=\"" + url + "\" alt=\"\"/>"
+                        + "<div class=\"caption\" style=\"margin-top: 5px\">"
+                        + "<p style=\"height: 25px\">" + item.name + "</p>"
+                        + "<p style=\"margin-top: 10px\">"
+                        + "<label>最新更改于" + DateFormat(date,'yyyy年MM月dd日hh时mm分') + "</label>"
+                        + "<a href=\"#\" class=\"btn btn-default\" role=\"button\"> 编辑 </a>"
+                        + "<a href=\"#\" class=\"btn btn-default\" role=\"button\"> 删除 </a>"
+                        + "</p>"
+                        + "</div>"
+                        + "</div>"
+                        + "</div>"
+                        + "</div>"
+
+                }
+                else {
+                    html += "<div class=\"col-sm-6 col-md-3\">"
+                        + "<div class=\"thumbnail\" style=\"height: 285px\">"
+                        + "<img style=\"margin-top: 5px\" src=\"" + url + "\" alt=\"\"/>"
+                        + "<div class=\"caption\" style=\"margin-top: 5px\">"
+                        + "<p style=\"height: 25px\">" + item.name + "</p>"
+                        + "<p style=\"margin-top: 10px\">"
+                        + "<label>最新更改于" + DateFormat(date,'yyyy年MM月dd日hh时mm分') + "</label>"
+                        + "<a href=\"#\" class=\"btn btn-default\" role=\"button\"> 编辑 </a>"
+                        + "<a href=\"#\" class=\"btn btn-default\" role=\"button\"> 删除 </a>"
+                        + "</p>"
+                        + "</div>"
+                        + "</div>"
+                        + "</div>"
+
+                }
+            }
+
+        });
+
+        if (html != "") {
+
+            html += "<nav aria-label=\"Page navigation example\" style=\"float: right; margin-bottom: 0px;clear: both;margin-right: 5px\">"
+                + "<ul class=\"pagination\">"
+                + "<li class=\"page-item\"><a class=\"page-link\" href=\"#\">Previous</a></li>"
+                + "<li class=\"page-item\"><a class=\"page-link\" href=\"#\">1</a></li>"
+                + "<li class=\"page-item\"><a class=\"page-link\" href=\"#\">2</a></li>"
+                + "<li class=\"page-item\"><a class=\"page-link\" href=\"#\">3</a></li>"
+                + "<li class=\"page-item\"><a class=\"page-link\" href=\"#\">Next</a></li>"
+                + "</ul>"
+                + "</nav>"
+        }
+       $("#container1").html(html);
+
+    }
+
+    function getNewsMaterialList(result) {
+        var items = result.item;
+        var html = "";
+        var balance = -1;
+        var url = "";
+        var length=items.length;
+        $.each(items, function (index, item) {
+                url = "http://img01.store.sogou.com/net/a/04/link?appid=100520029&url=" + item.content.news_item[0].thumb_url;
+               var date = new Date(item.update_time);
+               if(length-1==index)
+               {
+                   html += "<div class=\"col-sm-6 col-md-3\">"
+                       + "<div class=\"thumbnail\" style=\"height: 315px\">"
+                           + "<div class=\"caption\" style=\"height: 50px\">" + item.content.news_item[0].title + "</div>"
+                           + "<img style=\"margin-top: 5px\" src=\"" + url + "\" alt=\"预览文章\" />"
+                           + "<div class=\"caption\" style=\"margin-top: 5px\">"
+                                   + "<p style=\"height: 50px\">" + item.content.news_item[0].digest + "</p>"
+                                   + "<p style=\"margin-top: 10px\">"
+                                   + "<label >最新更改于" + DateFormat(date,'yyyy年MM月dd日hh时mm分') + "</label>"
+                                   + "<a href=\"#\" class=\"btn btn-default\" role=\"button\">编辑</a>"
+                                   + "<a href=\"#\" class=\"btn btn-default\" role=\"button\">删除</a>"
+                                   + "</p>"
+                           + "</div>"
+                       + " </div>"
+                       + " </div>"
+                       + " </div>";
+               }
+              else {
+                   balance = index % 4;
+                   if (balance == 0) {
+                       html += "<div class=\"row\" >"
+                           + "<div class=\"col-sm-6 col-md-3\">"
+                                   + "<div class=\"thumbnail\" style=\"height: 315px\">"
+                                           + "<div class=\"caption\" style=\"height: 50px\">" + item.content.news_item[0].title + "</div>"
+                                           + "<img style=\"margin-top: 5px\" src=\"" + url + "\" alt=\"预览文章\" />"
+                                           + "<div class=\"caption\" style=\"margin-top: 5px\">"
+                                                   + "<p style=\"height: 50px\">" + item.content.news_item[0].digest + "</p>"
+                                                   + "<p style=\"margin-top: 10px\">"
+                                                   + "<label >最新更改于" + DateFormat(date,'yyyy年MM月dd日hh时mm分') + "</label>"
+                                                   + "<a href=\"#\" class=\"btn btn-default\" role=\"button\">编辑</a>"
+                                                   + "<a href=\"#\" class=\"btn btn-default\" role=\"button\">删除</a>"
+                                                   + "</p>"
+                                           + "</div>"
+                                   + " </div>"
+                           + " </div>"
+                   }
+                   else if (balance == 3) {
+                       html += "<div class=\"col-sm-6 col-md-3\">"
+                           + "<div class=\"thumbnail\" style=\"height: 315px\">"
+                                   + "<div class=\"caption\" style=\"height: 50px\">" + item.content.news_item[0].title + "</div>"
+                                           + "<img style=\"margin-top: 5px\" src=\"" + url + "\" alt=\"预览文章\" />"
+                                           + "<div class=\"caption\" style=\"margin-top: 5px\">"
+                                               + "<p style=\"height: 50px\">" + item.content.news_item[0].digest + "</p>"
+                                               + "<p style=\"margin-top: 10px\">"
+                                               + "<label >最新更改于" + DateFormat(date,'yyyy年MM月dd日hh时mm分') + "</label>"
+                                               + "<a href=\"#\" class=\"btn btn-default\" role=\"button\">编辑</a>"
+                                               + "<a href=\"#\" class=\"btn btn-default\" role=\"button\">删除</a>"
+                                               + "</p>"
+                                           + "</div>"
+                                   + " </div>"
+                           + "</div>"
+                           + "</div>";
+                   }
+                   else {
+                       html += "<div class=\"col-sm-6 col-md-3\">"
+                            + "<div class=\"thumbnail\" style=\"height: 315px\">"
+                                   + "<div class=\"caption\" style=\"height: 50px\">" + item.content.news_item[0].title + "</div>"
+                                   + "<img style=\"margin-top: 5px\" src=\"" + url + "\" alt=\"预览文章\" />"
+                                   + "<div class=\"caption\" style=\"margin-top: 5px\">"
+                                           + "<p style=\"height: 50px\">" + item.content.news_item[0].digest + "</p>"
+                                           + "<p style=\"margin-top: 10px\">"
+                                                   + "<label >最新更改于" + DateFormat(date,'yyyy年MM月dd日hh时mm分') + "</label>"
+                                                   + "<a href=\"#\" class=\"btn btn-default\" role=\"button\">编辑</a>"
+                                                   + "<a href=\"#\" class=\"btn btn-default\" role=\"button\">删除</a>"
+                                           + "</p>"
+                                   + "</div>"
+                           + "</div>"
+                           + "</div>"
+                   }
+               }
+
+            }
+        );
+        if (html != "") {
+
+            html += "<nav aria-label=\"Page navigation example\" style=\"float: right; margin-bottom: 0px;clear: both;margin-right: 5px\">"
+                + "<ul class=\"pagination\">"
+                + "<li class=\"page-item\"><a class=\"page-link\" href=\"#\">Previous</a></li>"
+                + "<li class=\"page-item\"><a class=\"page-link\" href=\"#\">1</a></li>"
+                + "<li class=\"page-item\"><a class=\"page-link\" href=\"#\">2</a></li>"
+                + " <li class=\"page-item\"><a class=\"page-link\" href=\"#\">3</a></li>"
+                + "<li class=\"page-item\"><a class=\"page-link\" href=\"#\">Next</a></li>"
+                + "</ul>"
+                + "</nav>"
+        }
+        $("#container1").html(html);
+    }
+
+    function getAccessToken() {
+        var appId = $("#appId").val();
+        $.ajax({
+            url: "/wx/getAccessToken",
+            dataType: "text",
+            cache: false,
+            data: {appId: appId},
+            type: 'POST',
+            success: function (ob) {
+                var Str = JSON.stringify(ob);
+                $("#accesstoken").html(Str);
+
+            },
+            error: function (status, e) {
+                alert("系统错误: " + e);
+            }
+        });
+    }
+</script>
+</body>
+</html>

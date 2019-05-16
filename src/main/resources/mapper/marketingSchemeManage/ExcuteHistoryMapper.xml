@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.luer.marketingSchemeManage.dao.ExcuteHistoryMapper" >
+  <resultMap id="BaseResultMap" type="com.luer.marketingSchemeManage.bean.ExcuteHistory" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="plan_id" property="planId" jdbcType="VARCHAR" />
+    <result column="excute_result" property="excuteResult" jdbcType="VARCHAR" />
+    <result column="excute_times" property="excuteTimes" jdbcType="INTEGER" />
+    <result column="excute_time" property="excuteTime" jdbcType="TIMESTAMP" />
+    <result column="excute_user" property="excuteUser" jdbcType="VARCHAR" />
+  </resultMap>
+    <select id="getExcuteHistoryList" resultMap="BaseResultMap">
+        SELECT * FROM excute_history WHERE plan_id=#{planId}
+    </select>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, plan_id, excute_result, excute_times, excute_time, excute_user
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.luer.marketingSchemeManage.bean.ExcuteHistoryExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from excute_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from excute_history
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from excute_history
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.luer.marketingSchemeManage.bean.ExcuteHistoryExample" >
+    delete from excute_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.luer.marketingSchemeManage.bean.ExcuteHistory" >
+    insert into excute_history (id, plan_id, excute_result, 
+      excute_times, excute_time, excute_user
+      )
+    values (#{id,jdbcType=VARCHAR}, #{planId,jdbcType=VARCHAR}, #{excuteResult,jdbcType=VARCHAR}, 
+      #{excuteTimes,jdbcType=INTEGER}, #{excuteTime,jdbcType=TIMESTAMP}, #{excuteUser,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.luer.marketingSchemeManage.bean.ExcuteHistory" >
+    insert into excute_history
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="planId != null" >
+        plan_id,
+      </if>
+      <if test="excuteResult != null" >
+        excute_result,
+      </if>
+      <if test="excuteTimes != null" >
+        excute_times,
+      </if>
+      <if test="excuteTime != null" >
+        excute_time,
+      </if>
+      <if test="excuteUser != null" >
+        excute_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="planId != null" >
+        #{planId,jdbcType=VARCHAR},
+      </if>
+      <if test="excuteResult != null" >
+        #{excuteResult,jdbcType=VARCHAR},
+      </if>
+      <if test="excuteTimes != null" >
+        #{excuteTimes,jdbcType=INTEGER},
+      </if>
+      <if test="excuteTime != null" >
+        #{excuteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="excuteUser != null" >
+        #{excuteUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.luer.marketingSchemeManage.bean.ExcuteHistoryExample" resultType="java.lang.Integer" >
+    select count(*) from excute_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update excute_history
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.planId != null" >
+        plan_id = #{record.planId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.excuteResult != null" >
+        excute_result = #{record.excuteResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.excuteTimes != null" >
+        excute_times = #{record.excuteTimes,jdbcType=INTEGER},
+      </if>
+      <if test="record.excuteTime != null" >
+        excute_time = #{record.excuteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.excuteUser != null" >
+        excute_user = #{record.excuteUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update excute_history
+    set id = #{record.id,jdbcType=VARCHAR},
+      plan_id = #{record.planId,jdbcType=VARCHAR},
+      excute_result = #{record.excuteResult,jdbcType=VARCHAR},
+      excute_times = #{record.excuteTimes,jdbcType=INTEGER},
+      excute_time = #{record.excuteTime,jdbcType=TIMESTAMP},
+      excute_user = #{record.excuteUser,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.luer.marketingSchemeManage.bean.ExcuteHistory" >
+    update excute_history
+    <set >
+      <if test="planId != null" >
+        plan_id = #{planId,jdbcType=VARCHAR},
+      </if>
+      <if test="excuteResult != null" >
+        excute_result = #{excuteResult,jdbcType=VARCHAR},
+      </if>
+      <if test="excuteTimes != null" >
+        excute_times = #{excuteTimes,jdbcType=INTEGER},
+      </if>
+      <if test="excuteTime != null" >
+        excute_time = #{excuteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="excuteUser != null" >
+        excute_user = #{excuteUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.luer.marketingSchemeManage.bean.ExcuteHistory" >
+    update excute_history
+    set plan_id = #{planId,jdbcType=VARCHAR},
+      excute_result = #{excuteResult,jdbcType=VARCHAR},
+      excute_times = #{excuteTimes,jdbcType=INTEGER},
+      excute_time = #{excuteTime,jdbcType=TIMESTAMP},
+      excute_user = #{excuteUser,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

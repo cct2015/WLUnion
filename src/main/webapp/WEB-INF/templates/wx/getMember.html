@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>导入微信公众号会员</title>
+</head>
+<body class="nav-md">
+<div class="right_col" role="main">
+    <div class="container body">
+        <script th:inline="javascript">
+            $(function () {
+                queryAll();
+                getMerchantWX();
+            });
+
+            //会员统计
+            function queryAll()
+            {
+                $.ajax({
+                    url: "/wx/getMemberCount",
+                    dataType: "json",
+                    type: 'GET',
+                    cache: false,
+                    success: function (response)
+                    {
+                        var Membercount=[];
+                        Membercount=response.data.split('|');
+                        $("#divwx").html("当前商户导入本系统的会员数总计为"+Membercount[0]+"人,其中属于微信公众号下的会员数为"+Membercount[1]+"人。");
+                    },
+                    error: function (status,e) {
+                        alert("系统错误:"+e);
+                    }
+                });
+            }
+            //查询当前商户的公众号列表,从数据库
+            function getMerchantWX()
+            {
+                $.ajax({
+                    url: "/wx/getMerchantWX",
+                    dataType: "json",
+                    type: 'GET',
+                    cache: false,
+                    success: function (response)
+                    {
+                        $("#WxMessage").append("<tr><td>当前商户在本系统授权的公众号数目为"+response.length+"。</td></tr>");
+                        if(response.length>0)
+                        {
+                            var btn="";
+                            var divId="";
+                            $.each(response,function (index,item){
+                                btn="btn"+item.appId;
+                                divId="div"+item.appId;
+                              //  $("#WxMessage").append(" <tr  style=\"height: 35px; \"><td style='width: 410px;'>公众号AppId:"+item.appId+"&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"button\"  onclick=\"importMember(\'"+item.appId+"\');\" value=\"导入公众号会员\" id=\'"+btn+"\' /></td><td style='width: 137px;'><input type=\"button\" value=\"查看公众号信息\" onclick=\"getWXInfo(\'"+item.appId+"\');\"  /></td><td style='width: 150px;'><input type=\"button\" value=\"接口访问次数清零\" onclick=\"clearQuota(\'"+item.appId+"\');\"  /></td><td><div style='color:red;font-size: 16px;display: none' id='"+divId+"'>数据导入中，可能需要花费一定的时间，请耐心等待...</div></td></tr>");
+                                $("#WxMessage").append(" <tr  style=\"height: 35px; \"><td style='width: 410px;'>公众号AppId:"+item.appId+"&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"button\"  onclick=\"importMember(\'"+item.appId+"\');\" value=\"导入公众号会员\" id=\'"+btn+"\' /></td><td style='width: 137px;'><input type=\"button\" value=\"查看公众号信息\" onclick=\"getWXInfo(\'"+item.appId+"\');\"  /></td><td style='width: 150px;'><input type=\"button\" value=\"关注者总数\" onclick=\"QueryFanSum(\'"+item.appId+"\');\"  /></td><td><div style='color:red;font-size: 16px;display: none' id='"+divId+"'>数据导入中，可能需要花费一定的时间，请耐心等待...</div></td></tr>");
+                        });
+                        }
+                    },
+                    error: function (status,e) {
+                        alert("系统错误:"+e);
+                    }
+                });
+            }
+
+            function QueryFanSum(appId)
+            {
+                $.ajax({
+                    url: "/wx/QueryFanSum",
+                    dataType: "json",
+                    type: 'POST',
+                    cache: false,
+                    data:{appId:appId},
+                    success: function (response)
+                    {
+                        var Str="该公众号关注者总数是："+response;
+                        alert(Str);
+                    },
+                    error: function (status,e) {
+                        alert("系统错误:"+e);
+                    }
+                });
+            }
+            //获得当前授权微信公众号的信息
+            function getWXInfo(appId)
+            {
+                $.ajax({
+                    url: "/wx/getWXInfo",
+                    dataType: "json",
+                    cache: false,
+                    data:{appId:appId},
+                    type: 'POST',
+                    success: function (ob)
+                    {
+                        // var Str="{\"openid\":null,\"nick_name\":\"陆尔AI智能\",\"user_name\":\"gh_eae864250c56\",\"sex\":0,\"province\":null,\"city\":null,\"country\":null,\"headimgurl\":\"http://wx.qlogo.cn/mmopen/QCiaPALVjd9XDywwtYF2BWocic3IDBSZE1WOG6I7FRXR3HzwBwtm3fzVDrTzibrWueoMglh00FXkE8W1xIuWI2tVRkwPnB19ykp/0\",\"language\":null,\"privilege\":null,\"service_type_info\":\"1\",\"principal_name\":\"上海陆尔信息科技有限公司\"}";
+                        var type=ob.service_type_info=="2"?"服务号":"订阅号";
+                        var Str="\r\n单位名称："+ob.principal_name +"\r\n公众号类型："+type +"\r\n名称："+ob.nick_name +"\r\n原始ID："+ob.user_name
+                        alert(Str);
+                    },
+                    error: function (status,e) {
+                        alert("系统错误: "+e);
+                    }
+                });
+            }
+            //导入某个公众号号下的会员
+            function importMember(appId)
+            {
+                var btn="btn"+appId;
+                var divId="div"+appId;
+                $('#'+btn).attr({"disabled":"disabled"});
+                $('#'+divId).css("display","block");
+                $.ajax({
+                    url: "/wx/importMember",
+                    dataType: "json",
+                    type: 'POST',
+                    cache: false,
+                    data:{appId:appId},
+                    //  contentType: "application/json",
+                    success: function (response)
+                    {
+                        $('#'+divId).css("display","none");
+                        // $('#msg').html(response.data);
+                        var Str=" 共导入微信会员："+response.data+"人。";
+                        alert(Str);
+                        if(response.data!=0)
+                            window.location.reload();
+                        else
+                            $('#'+btn).removeAttr("disabled");
+                    },
+                    error: function (e) {
+                        $('#'+btn).removeAttr("disabled");
+                        $('#'+divId).css("display","none");
+                        alert("系统错误:"+e);
+                    }
+                });
+            }
+            //导入微信会员，返回导入的数量
+            // function getMember()
+            // {
+            //
+            //     $.ajax({
+            //         url: "/getMember",
+            //         dataType: "json",
+            //         type: 'POST',
+            //         cache: false,
+            //         success: function (data)
+            //         {
+            //             alert(data);
+            //             var Str=" 共导入微信会员："+res+"人。";
+            //             $("#divwx").html(Str);
+            //         },
+            //         error: function (e) {
+            //             alert("系统错误:"+e);
+            //         }
+            //     });
+            //
+            // }
+            /////////////////////////////////////
+            //获得所有会员数目，从数据库
+            function getMemberCount()
+            {
+                $.ajax({
+                    url: "/wx/getMemberCount",
+                    dataType: "json",
+                    type: 'GET',
+                    cache: false,
+                    success: function (data)
+                    {
+                        $("#divwx").html("当前商户所拥有的会员："+data+"人");
+                    },
+                    error: function (e) {
+                        alert("系统错误:"+e);
+                    }
+                });
+            }
+
+            //发消息清空次数
+            function clearQuota(appId)
+            {
+                $.ajax({
+                    url: "/wx/clearQuota",
+                    dataType: "json",
+                    type: 'POST',
+                    data:{appId:appId},
+                    cache: false,
+                    success: function (response)
+                    {
+                        alert(response.data);
+                    },
+                    error: function (status,e) {
+                        alert("系统错误:"+e);
+                    }
+                });
+            }
+
+            // function writeticket()
+            // {
+            //     $.ajax({
+            //         url: "/wx/writeFile",
+            //         dataType: "json",
+            //         type: 'POST',
+            //         cache: false,
+            //         success: function (response)
+            //         {
+            //             alert(response.data);
+            //         },
+            //         error: function (status,e) {
+            //             alert("系统错误:"+e);
+            //         }
+            //     });
+            //
+            // }
+
+            //获得微信会员数目，从数据库
+            // function getWXMemberCount(Flag)
+            // {
+            //
+            //     $.ajax({
+            //         url: "/getWXMemberCount",
+            //         dataType: "json",
+            //         cache: false,
+            //         type: 'GET',
+            //         success: function (data)
+            //         {
+            //             if(Flag=='1')
+            //             {
+            //                 var Str=$("#divwx").html();
+            //                 Str+=",其中微信会员为： "+data+"人。";
+            //                 $("#divwx").html(Str);
+            //             }
+            //             else
+            //             {
+            //                 var Str="微信会员为： "+data+"人。";
+            //                 $("#divwx").html(Str);
+            //             }
+            //
+            //         },
+            //         error: function (e) {
+            //             alert("系统错误:"+e);
+            //         }
+            //     });
+            //
+            // }
+            //////////以下测试、以后删除//////////
+            function getTicket()
+            {
+                $.ajax({
+                    url: "/wx/getTicket",
+                    dataType: "json",
+                    cache: false,
+                    type: 'POST',
+                    success: function (response) {
+                        // var res=JSON.stringify(response)
+                        $('#msg').html(response.data);
+                        // alert(response.data);
+                    },
+                    error: function (textStatus, e) {
+                        alert("错误："+textStatus);
+                    }
+                });
+            }
+
+            //     function getComponentAccessToken()
+            //     {
+            //         $.ajax({
+            //             url: "/wx/getComponentAccessToken",
+            //             dataType: "json",
+            //             cache: false,
+            //             type: 'GET',
+            //             success: function (response)
+            //             {
+            //                 $('#msg').html(response.data);
+            //                // alert(response.data);
+            //             },
+            //             error: function (textStatus,e) {
+            //                 alert("系统错误:"+e);
+            //             }
+            //         });
+            //     }
+            // function getWXAuthorizerAccessToken()
+            // {
+            //
+            //     $.ajax({
+            //         url: "/wx/getWXAuthorizerAccessToken",
+            //         dataType: "json",
+            //         cache: false,
+            //         type: 'GET',
+            //         success: function (response)
+            //         {
+            //             $('#msg').html(response.data);
+            //             // alert(response.data);
+            //         },
+            //         error: function (textStatus,e) {
+            //             alert("系统错误:"+e);
+            //         }
+            //     });
+            // }
+        </script>
+        <table style=" margin: auto 0;font-size: 16px;" id="WxMessage">
+        </table>
+        <br />
+        <div style="width: 710px;margin: auto;color: red; font-size: 16px; padding-left: 0px; border:0px; border-style: solid; float: left" id="divwx"></div>
+        <br />
+        <!--<textarea rows="20" id="msg" cols="35"></textarea>-->
+    </div>
+
+    <!--<input type="button" onclick="getTicket();" value="获得ticket" />-->
+    <!--<input type="button" onclick="getComponentAccessToken();" value="ComponentAccessToken" />-->
+    <!--<input type="button" onclick="getWXAuthorizerAccessToken();" value="getWXAuthorizerAccessToken" />-->
+</div>
+
+</body>
+</html>

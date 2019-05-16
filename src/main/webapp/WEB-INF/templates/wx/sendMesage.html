@@ -1,0 +1,156 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--<meta charset="UTF-8">-->
+<!--<title>向会员群发消息</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<body class="nav-md">-->
+<!--<div class="right_col" role="main">-->
+<!--<div class="container body">-->
+<!--<script th:inline="javascript">-->
+<!--//发消息测试-->
+<!--function SendMessage()-->
+<!--{-->
+<!--$.ajax({-->
+<!--url: "/wx/sendMessage",-->
+<!--dataType: "json",-->
+<!--type: 'POST',-->
+<!--cache: false,-->
+<!--success: function (response)-->
+<!--{-->
+<!--alert(response.data);-->
+<!--},-->
+<!--error: function (status,e) {-->
+<!--alert("系统错误:"+e);-->
+<!--}-->
+<!--});-->
+<!--}-->
+<!--</script>-->
+<!--<form >-->
+<!--<table style="width: 100%">-->
+<!--<tr>-->
+<!--<td style=" text-align: left">所有的OpenId列表：</td>-->
+
+<!--</tr>-->
+
+<!--<tr>-->
+<!--<td>-->
+<!--<textarea rows="5" id="openids" cols="35" style="width: 90%"></textarea>-->
+<!--</td>-->
+
+<!--</tr>-->
+
+<!--<tr>-->
+<!--<td style=" text-align: left">发送内容：</td>-->
+
+<!--</tr>-->
+
+<!--<tr>-->
+<!--<td>-->
+<!--<textarea rows="20" id="msg" cols="35" style="width: 90%"></textarea>-->
+<!--</td>-->
+
+<!--</tr>-->
+
+<!--<tr>-->
+<!--<td>-->
+<!--<input type="button"  onclick="SendMessage();" value="发  送"  />-->
+<!--</td>-->
+<!--</tr>-->
+<!--</table>-->
+<!--</form >-->
+<!--</body>-->
+
+<!--</html>-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<HTML>
+<HEAD>
+    <TITLE>JS弹出层居中带遮罩并可拖动——爱微网TITLE>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <META NAME="Author" CONTENT="爱微网">
+        <META NAME="Keywords" CONTENT="js弹出层,js拖曳">
+        <META NAME="Description" CONTENT="JS弹出层居中带遮罩并可拖动">
+        <style type="text/css">
+            * {
+                padding: 0px;
+                margin: 0px;
+            }
+
+            #popupdiv {
+                width: 300px;
+                height: 100px;
+                position: absolute;
+                z-index: 1000;
+                border: 2px solid #ffffff;
+                background: url(http://www.iiwnet.com/images/bg.png) #ffffff;
+            }
+        </style>
+        <script langue="javascript">
+            function show(popupdiv) {
+                var Idiv = document.getElementById(popupdiv);
+                Idiv.style.display = "block";
+                //以下部分要将弹出层居中显示
+                Idiv.style.left = (document.documentElement.clientWidth - Idiv.clientWidth) / 2 + document.documentElement.scrollLeft + "px";
+                Idiv.style.top = (document.documentElement.clientHeight - Idiv.clientHeight) / 2 + document.documentElement.scrollTop - 50 + "px";
+               //以下部分使整个页面至灰不可点击
+                var procbg = document.createElement("div"); //首先创建一个div
+                procbg.setAttribute("id", "mybg"); //定义该div的id
+                procbg.style.background = "#000000";
+                procbg.style.width = "100%";
+                procbg.style.height = "100%";
+                procbg.style.position = "fixed";
+                procbg.style.top = "0";
+                procbg.style.left = "0";
+                procbg.style.zIndex = "500";
+                procbg.style.opacity = "0.6";
+                procbg.style.filter = "Alpha(opacity=70)";
+                //以上部分也可以用csstext代替
+                // procbg.style.cssText="background:#000000;width:100%;height:100%;position:fixed;top:0;left:0;zIndex:500;opacity:0.6;filter:Alpha(opacity=70);";
+                //背景层加入页面
+                document.body.appendChild(procbg);
+                document.body.style.overflow = "hidden"; //取消滚动条
+                 //以下部分实现弹出层的拖拽效果
+                var posX;
+                var posY;
+                Idiv.onmousedown = function (e) {
+                    if (!e) e = window.event; //IE
+                    posX = e.clientX - parseInt(Idiv.style.left);
+                    posY = e.clientY - parseInt(Idiv.style.top);
+                    document.onmousemove = mousemove;
+                }
+                document.onmouseup = function () {
+                    document.onmousemove = null;
+                }
+
+                function mousemove(ev) {
+                    if (ev == null) ev = window.event;//IE
+                    Idiv.style.left = (ev.clientX - posX) + "px";
+                    Idiv.style.top = (ev.clientY - posY) + "px";
+                }
+            }
+
+            function closeDiv(popupdiv) //关闭弹出层
+            {
+                var Idiv = document.getElementById(popupdiv);
+                Idiv.style.display = "none";
+                document.body.style.overflow = "auto"; //恢复页面滚动条
+                var body = document.getElementsByTagName("body");
+                var mybg = document.getElementById("mybg");
+                body[0].removeChild(mybg);
+            }
+        </script>
+        </HEAD>
+
+<body class="nav-md">-->
+<div class="right_col" role="main">
+    <div class="container body">
+        <div><a href="javascript:void(0)" id="show" onclick="show('popupdiv')">点击打开弹出层！</a></div>
+        <div id="popupdiv" style="display:none;">
+            <a href="javascript:void(0)" onclick="closeDiv('popupdiv')">点击关闭层</a>
+        </div>
+    </div>
+</div>
+</body>
+</HTML>

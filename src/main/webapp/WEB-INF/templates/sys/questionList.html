@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>常见问题</title>
+    <!--<div class="x_content" style="margin-top: 10px">-->
+        <!--<div>-->
+            <!--<table id="jqGrid"></table>-->
+            <!--<div id="jqGridPager"></div>-->
+        <!--</div>-->
+
+</head>
+<body class="nav-md">
+<div class="container body">
+    <div class="right_col" role="main">
+        <div class="x_panel">
+            <div class="x_content">
+                <div>
+                    <div>
+                        <input  placeholder="请您输入搜索的问题" type="text" id="textall" /><input type="button" onclick="qc();" value="搜 索" />
+                    </div>
+                    <div id="questionDiv" ></div>
+
+                    <!--<input type="button" onclick="qu();" value="点击"/>-->
+                    <!--<a href="" style="width: 100px;height: 400px;margin-left: 300px; " id="question" ></a>-->
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function qc(){
+        var question=document.getElementById("textall").value;
+        // alert(question);
+        $.ajax({
+            data:{question:question},
+            url:'../qamanagePlan/QuestionPlanmo',
+            dataType:"json",
+            type:'POST',
+            cache:false,//是否储存
+            success:function (data) {
+                // var  a=JSON.stringify(data);
+                //     alert(a);
+                var html="";
+                $.each(data,function (index,item) {
+                    $("#questionDiv").html(html+="<br /><img src=\"../static/images/timg2.jpg\" width=\"10px\" height=\"10px\"/><a style='color: blue; background-color: white;' href='#' onclick=\"OpenDetail('"+item.id+"')\">"+item.question+"</a>");
+                });
+            }
+        })
+    }
+    $(document).ready(function () {
+        Query();
+    })
+    function Query()
+    {
+        $.ajax({
+            url:'../qamanagePlan/QuestionPlan',
+            dataType:"json",
+            type:'POST',
+            cache:false,//是否储存
+            success:function (data) {
+                // var  as=JSON.stringify(data)
+
+                var html="";
+                $.each(data,function (index,item) {
+                    $("#questionDiv").html(html+="<br /><img src=\"../static/images/timg2.jpg\" width=\"10px\" height=\"10px\"/><a style='color: blue; background-color: white;' href='#' onclick=\"OpenDetail('"+item.id+"')\">"+item.question+"</a>");
+                });
+
+                // $("p").click(function () {
+                //     var  question=$(this).html();
+                //     // alert(question);
+                //     $("a").attr("href","../sys/show?"+question)
+                //     // console.log(location.search);//跑一下
+                //     // $.ajax({
+                //     //     url:'../qamanagePlan/SelectQuestion',
+                //     //     data:{question:question},
+                //     //     dataType:"json",
+                //     //     type:'POST',
+                //     //     cache:false,//是否储存
+                //     //     success:function (data) {
+                //     //         var  arr=JSON.stringify(data);
+                //     //         alert(arr);
+                //     //         $.each(data,function (index,item) {
+                //     //             $("<p>").html().appendTo('#question')
+                //     //             $("<br/>").appendTo('#question')
+                //     //             var a=document.createElement('p');
+                //     //             a.innerHTML=item.question,item.id;
+                //     //             document.getElementById('question').appendChild(a);
+                //     //         })
+                //     //     }
+                //     // })
+                // })
+            },
+        });
+    }
+
+    function OpenDetail(id)
+    {
+
+        var dialog = BootstrapDialog.show({ //会话
+            type: BootstrapDialog.TYPE_DEFAULT,
+            title: "<span style=\"color: #ab8ce4\">问题详细</span>",
+            closable: false,//可关闭
+            draggable: true,//拖动
+            cssClass: 'login-dialog',
+            message: $('<div></div>').load('../sysother/show?id='+id),//加载弹出页面
+            cssClass: 'login-dialog',
+            size: BootstrapDialog.SIZE_WIDE,//弹出框大小。
+            buttons: [
+               {
+                    label: '关闭',
+                    icon: 'fa fa-close',//图标
+                    action: function (dialogItself) { //对话本身数值
+                        dialogItself.close();
+                    }
+                }]
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.luer.JD.dao.JdOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.luer.JD.bean.JdOrder" >
+    <id column="order_id" property="orderId" jdbcType="BIGINT" />
+    <result column="finish_time" property="finishTime" jdbcType="BIGINT" />
+    <result column="order_emt" property="orderEmt" jdbcType="INTEGER" />
+    <result column="order_time" property="orderTime" jdbcType="BIGINT" />
+    <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+    <result column="pay_month" property="payMonth" jdbcType="VARCHAR" />
+    <result column="plus" property="plus" jdbcType="INTEGER" />
+    <result column="pop_id" property="popId" jdbcType="BIGINT" />
+    <result column="union_id" property="unionId" jdbcType="BIGINT" />
+    <result column="ext1" property="ext1" jdbcType="VARCHAR" />
+    <result column="valid_code" property="validCode" jdbcType="INTEGER" />
+    <result column="has_more" property="hasMore" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    order_id, finish_time, order_emt, order_time, parent_id, pay_month, plus, pop_id, 
+    union_id, ext1, valid_code, has_more
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.luer.JD.bean.JdOrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from jd_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from jd_order
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from jd_order
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.luer.JD.bean.JdOrderExample" >
+    delete from jd_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.luer.JD.bean.JdOrder" >
+    insert into jd_order (order_id, finish_time, order_emt, 
+      order_time, parent_id, pay_month, 
+      plus, pop_id, union_id, 
+      ext1, valid_code, has_more
+      )
+    values (#{orderId,jdbcType=BIGINT}, #{finishTime,jdbcType=BIGINT}, #{orderEmt,jdbcType=INTEGER}, 
+      #{orderTime,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}, #{payMonth,jdbcType=VARCHAR}, 
+      #{plus,jdbcType=INTEGER}, #{popId,jdbcType=BIGINT}, #{unionId,jdbcType=BIGINT}, 
+      #{ext1,jdbcType=VARCHAR}, #{validCode,jdbcType=INTEGER}, #{hasMore,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.luer.JD.bean.JdOrder" >
+    insert into jd_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="finishTime != null" >
+        finish_time,
+      </if>
+      <if test="orderEmt != null" >
+        order_emt,
+      </if>
+      <if test="orderTime != null" >
+        order_time,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="payMonth != null" >
+        pay_month,
+      </if>
+      <if test="plus != null" >
+        plus,
+      </if>
+      <if test="popId != null" >
+        pop_id,
+      </if>
+      <if test="unionId != null" >
+        union_id,
+      </if>
+      <if test="ext1 != null" >
+        ext1,
+      </if>
+      <if test="validCode != null" >
+        valid_code,
+      </if>
+      <if test="hasMore != null" >
+        has_more,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="finishTime != null" >
+        #{finishTime,jdbcType=BIGINT},
+      </if>
+      <if test="orderEmt != null" >
+        #{orderEmt,jdbcType=INTEGER},
+      </if>
+      <if test="orderTime != null" >
+        #{orderTime,jdbcType=BIGINT},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="payMonth != null" >
+        #{payMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="plus != null" >
+        #{plus,jdbcType=INTEGER},
+      </if>
+      <if test="popId != null" >
+        #{popId,jdbcType=BIGINT},
+      </if>
+      <if test="unionId != null" >
+        #{unionId,jdbcType=BIGINT},
+      </if>
+      <if test="ext1 != null" >
+        #{ext1,jdbcType=VARCHAR},
+      </if>
+      <if test="validCode != null" >
+        #{validCode,jdbcType=INTEGER},
+      </if>
+      <if test="hasMore != null" >
+        #{hasMore,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.luer.JD.bean.JdOrderExample" resultType="java.lang.Integer" >
+    select count(*) from jd_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update jd_order
+    <set >
+      <if test="record.orderId != null" >
+        order_id = #{record.orderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.finishTime != null" >
+        finish_time = #{record.finishTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderEmt != null" >
+        order_emt = #{record.orderEmt,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderTime != null" >
+        order_time = #{record.orderTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.parentId != null" >
+        parent_id = #{record.parentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.payMonth != null" >
+        pay_month = #{record.payMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="record.plus != null" >
+        plus = #{record.plus,jdbcType=INTEGER},
+      </if>
+      <if test="record.popId != null" >
+        pop_id = #{record.popId,jdbcType=BIGINT},
+      </if>
+      <if test="record.unionId != null" >
+        union_id = #{record.unionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.ext1 != null" >
+        ext1 = #{record.ext1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.validCode != null" >
+        valid_code = #{record.validCode,jdbcType=INTEGER},
+      </if>
+      <if test="record.hasMore != null" >
+        has_more = #{record.hasMore,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update jd_order
+    set order_id = #{record.orderId,jdbcType=BIGINT},
+      finish_time = #{record.finishTime,jdbcType=BIGINT},
+      order_emt = #{record.orderEmt,jdbcType=INTEGER},
+      order_time = #{record.orderTime,jdbcType=BIGINT},
+      parent_id = #{record.parentId,jdbcType=BIGINT},
+      pay_month = #{record.payMonth,jdbcType=VARCHAR},
+      plus = #{record.plus,jdbcType=INTEGER},
+      pop_id = #{record.popId,jdbcType=BIGINT},
+      union_id = #{record.unionId,jdbcType=BIGINT},
+      ext1 = #{record.ext1,jdbcType=VARCHAR},
+      valid_code = #{record.validCode,jdbcType=INTEGER},
+      has_more = #{record.hasMore,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.luer.JD.bean.JdOrder" >
+    update jd_order
+    <set >
+      <if test="finishTime != null" >
+        finish_time = #{finishTime,jdbcType=BIGINT},
+      </if>
+      <if test="orderEmt != null" >
+        order_emt = #{orderEmt,jdbcType=INTEGER},
+      </if>
+      <if test="orderTime != null" >
+        order_time = #{orderTime,jdbcType=BIGINT},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="payMonth != null" >
+        pay_month = #{payMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="plus != null" >
+        plus = #{plus,jdbcType=INTEGER},
+      </if>
+      <if test="popId != null" >
+        pop_id = #{popId,jdbcType=BIGINT},
+      </if>
+      <if test="unionId != null" >
+        union_id = #{unionId,jdbcType=BIGINT},
+      </if>
+      <if test="ext1 != null" >
+        ext1 = #{ext1,jdbcType=VARCHAR},
+      </if>
+      <if test="validCode != null" >
+        valid_code = #{validCode,jdbcType=INTEGER},
+      </if>
+      <if test="hasMore != null" >
+        has_more = #{hasMore,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.luer.JD.bean.JdOrder" >
+    update jd_order
+    set finish_time = #{finishTime,jdbcType=BIGINT},
+      order_emt = #{orderEmt,jdbcType=INTEGER},
+      order_time = #{orderTime,jdbcType=BIGINT},
+      parent_id = #{parentId,jdbcType=BIGINT},
+      pay_month = #{payMonth,jdbcType=VARCHAR},
+      plus = #{plus,jdbcType=INTEGER},
+      pop_id = #{popId,jdbcType=BIGINT},
+      union_id = #{unionId,jdbcType=BIGINT},
+      ext1 = #{ext1,jdbcType=VARCHAR},
+      valid_code = #{validCode,jdbcType=INTEGER},
+      has_more = #{hasMore,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </update>
+    <select id="selectOrder" resultMap="BaseResultMap">
+        SELECT j.*,s.estimateFee,s.merchantName as merchantName,s.customerId FROM jd_order j,
+        (SELECT SUM(estimate_fee) as estimateFee,order_id,m.company_name as merchantName,substring_index(js.sub_union_id,'_',-1) as customerId FROM jd_sku_list js
+        LEFT JOIN marketing_merchant m on substring_index(js.sub_union_id,'_',1)=m.id
+        GROUP BY order_id) s
+        WHERE j.order_id=s.order_id
+        <if test="beginTime != null and beginTime != 0">
+            and
+            order_time &gt;=#{beginTime}
+        </if>
+        <if test="endTime != null and endTime != 0">
+            and
+            order_time &lt;=#{endTime}
+        </if>
+        <if test="orderId != null and orderId != 0">
+            and
+            orderId =#{orderId}
+        </if>
+        <if test="merchantId != null and merchantId != ''">
+            and
+            j.order_id in (SELECT order_id FROM jd_sku_list WHERE substring_index(sub_union_id,'_',1)=#{merchantId})
+        </if>
+        order by j.order_time desc
+    </select>
+    <select id="getAgentOrder" resultMap="BaseResultMap">
+        SELECT j.*,s.estimateFee,s.merchantName as merchantName,s.customerId FROM jd_order j,
+        (SELECT SUM(estimate_fee) as estimateFee,order_id,m.company_name as merchantName,substring_index(js.sub_union_id,'_',-1) as customerId FROM jd_sku_list js
+        LEFT JOIN marketing_merchant m on substring_index(js.sub_union_id,'_',1)=m.id
+        GROUP BY order_id) s
+        WHERE j.order_id=s.order_id
+        <if test="beginTime != null and beginTime != 0">
+            and
+            order_time &gt;=#{beginTime}
+        </if>
+        <if test="endTime != null and endTime != 0">
+            and
+            order_time &lt;=#{endTime}
+        </if>
+        <if test="orderId != null and orderId != 0">
+            and
+            orderId =#{orderId}
+        </if>
+        <if test="merchantId != null and merchantId != ''">
+            and
+            j.order_id in (SELECT order_id FROM jd_sku_list WHERE substring_index(sub_union_id,'_',1)=#{merchantId})
+        </if>
+            and
+            j.order_id in (SELECT order_id FROM jd_sku_list WHERE substring_index(sub_union_id,'_',1) in ( select id from marketing_merchant where parent_id =#{parentId}))
+        order by j.order_time desc
+    </select>
+    <select id="selectAgentOrder" resultMap="BaseResultMap">
+        SELECT j.*,s.estimateFee,s.merchantName as merchantName,s.customerId FROM jd_order j,
+        (SELECT SUM(estimate_fee) as estimateFee,order_id,m.company_name as merchantName,substring_index(js.sub_union_id,'_',-1) as customerId FROM jd_sku_list js
+        LEFT JOIN marketing_merchant m on substring_index(js.sub_union_id,'_',1)=m.id
+        GROUP BY order_id) s
+        WHERE j.order_id=s.order_id  and
+            j.order_id in (SELECT order_id FROM jd_sku_list WHERE
+            substring_index(sub_union_id,'_',1) in ( select id from marketing_merchant where parent_id =#{merchantId}))
+        order by j.order_time desc
+    </select>
+
+    <insert id="orderListInsert" parameterType="java.util.List">
+        replace into jd_order (order_id, finish_time, order_emt, order_time, parent_id, pay_month, plus, pop_id,
+        union_id, ext1, valid_code, has_more ) values
+        <foreach separator="," item="jdOrder" collection="list">
+            (#{jdOrder.orderId,jdbcType=BIGINT}, #{jdOrder.finishTime,jdbcType=BIGINT},
+            #{jdOrder.orderEmt,jdbcType=INTEGER}, #{jdOrder.orderTime,jdbcType=BIGINT},
+            #{jdOrder.parentId,jdbcType=BIGINT}, #{jdOrder.payMonth,jdbcType=VARCHAR}, #{jdOrder.plus,jdbcType=INTEGER},
+            #{jdOrder.popId,jdbcType=BIGINT}, #{jdOrder.unionId,jdbcType=BIGINT}, #{jdOrder.ext1,jdbcType=VARCHAR},
+            #{jdOrder.validCode,jdbcType=INTEGER}, #{jdOrder.hasMore,jdbcType=VARCHAR} )
+        </foreach>
+
+    </insert>
+
+</mapper>

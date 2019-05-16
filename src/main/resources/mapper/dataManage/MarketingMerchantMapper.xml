@@ -1,0 +1,980 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.luer.dataManage.dao.MarketingMerchantMapper">
+    <resultMap id="BaseResultMap" type="com.luer.dataManage.bean.MarketingMerchant">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
+        <result column="company_short" property="companyShort" jdbcType="VARCHAR"/>
+        <result column="industry_id" property="industryId" jdbcType="VARCHAR"/>
+        <result column="contacter" property="contacter" jdbcType="VARCHAR"/>
+        <result column="tel" property="tel" jdbcType="VARCHAR"/>
+        <result column="district" property="district" jdbcType="VARCHAR"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+        <result column="province" property="province" jdbcType="VARCHAR"/>
+        <result column="country" property="country" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="main_products" property="mainProducts" jdbcType="VARCHAR"/>
+        <result column="main_brand" property="mainBrand" jdbcType="VARCHAR"/>
+        <result column="merchant_type" property="merchantType" jdbcType="INTEGER"/>
+        <result column="step" property="step" jdbcType="INTEGER"/>
+        <result column="parent_id" property="parentId" jdbcType="VARCHAR"/>
+        <result column="bank_no" property="bankNo" jdbcType="VARCHAR"/>
+        <result column="bank_address" property="bankAddress" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="add_time" property="addTime" jdbcType="TIMESTAMP"/>
+        <result column="add_user" property="addUser" jdbcType="VARCHAR"/>
+        <result column="last_update" property="lastUpdate" jdbcType="TIMESTAMP"/>
+        <result column="last_updater" property="lastUpdater" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="fax_no" property="faxNo" jdbcType="VARCHAR"/>
+        <result column="credit_code" property="creditCode" jdbcType="VARCHAR"/>
+        <result column="marketing_no" property="marketingNo" jdbcType="VARCHAR"/>
+        <result column="bank_user" property="bankUser" jdbcType="VARCHAR"/>
+        <result column="system_name" property="systemName" jdbcType="VARCHAR"/>
+        <result column="acquirer" property="acquirer" jdbcType="VARCHAR"/>
+        <result column="fans" property="fans" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.luer.dataManage.bean.MarketingMerchant" extends="BaseResultMap">
+        <result column="system_icon" property="systemIcon" jdbcType="LONGVARBINARY"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, company_name, company_short, industry_id, contacter, tel, district, city, province,
+        country, address, main_products, main_brand, merchant_type, step, parent_id, bank_no,
+        bank_address, remark, add_time, add_user, last_update, last_updater, status, fax_no,
+        credit_code, marketing_no, bank_user, system_name, acquirer, fans
+    </sql>
+    <sql id="Blob_Column_List">
+        system_icon
+    </sql>
+    <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs"
+            parameterType="com.luer.dataManage.bean.MarketingMerchantExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from marketing_merchant
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByExample" resultMap="BaseResultMap"
+            parameterType="com.luer.dataManage.bean.MarketingMerchantExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from marketing_merchant
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from marketing_merchant
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from marketing_merchant
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.luer.dataManage.bean.MarketingMerchantExample">
+        delete from marketing_merchant
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.luer.dataManage.bean.MarketingMerchant">
+        insert into marketing_merchant (id, company_name, company_short,
+        industry_id, contacter, tel,
+        district, city, province,
+        country, address, main_products,
+        main_brand, merchant_type, step,
+        parent_id, bank_no, bank_address,
+        remark, add_time, add_user,
+        last_update, last_updater, status,
+        fax_no, credit_code, marketing_no,
+        bank_user, system_name, acquirer,
+        fans, system_icon)
+        values (#{id,jdbcType=VARCHAR}, #{companyName,jdbcType=VARCHAR}, #{companyShort,jdbcType=VARCHAR},
+        #{industryId,jdbcType=VARCHAR}, #{contacter,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR},
+        #{district,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR},
+        #{country,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{mainProducts,jdbcType=VARCHAR},
+        #{mainBrand,jdbcType=VARCHAR}, #{merchantType,jdbcType=INTEGER}, #{step,jdbcType=INTEGER},
+        #{parentId,jdbcType=VARCHAR}, #{bankNo,jdbcType=VARCHAR}, #{bankAddress,jdbcType=VARCHAR},
+        #{remark,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{addUser,jdbcType=VARCHAR},
+        #{lastUpdate,jdbcType=TIMESTAMP}, #{lastUpdater,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+        #{faxNo,jdbcType=VARCHAR}, #{creditCode,jdbcType=VARCHAR}, #{marketingNo,jdbcType=VARCHAR},
+        #{bankUser,jdbcType=VARCHAR}, #{systemName,jdbcType=VARCHAR}, #{acquirer,jdbcType=VARCHAR},
+        #{fans,jdbcType=INTEGER}, #{systemIcon,jdbcType=LONGVARBINARY})
+    </insert>
+    <insert id="insertSelective" parameterType="com.luer.dataManage.bean.MarketingMerchant">
+        insert into marketing_merchant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="companyName != null">
+                company_name,
+            </if>
+            <if test="companyShort != null">
+                company_short,
+            </if>
+            <if test="industryId != null">
+                industry_id,
+            </if>
+            <if test="contacter != null">
+                contacter,
+            </if>
+            <if test="tel != null">
+                tel,
+            </if>
+            <if test="district != null">
+                district,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="province != null">
+                province,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="mainProducts != null">
+                main_products,
+            </if>
+            <if test="mainBrand != null">
+                main_brand,
+            </if>
+            <if test="merchantType != null">
+                merchant_type,
+            </if>
+            <if test="step != null">
+                step,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="bankNo != null">
+                bank_no,
+            </if>
+            <if test="bankAddress != null">
+                bank_address,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="addTime != null">
+                add_time,
+            </if>
+            <if test="addUser != null">
+                add_user,
+            </if>
+            <if test="lastUpdate != null">
+                last_update,
+            </if>
+            <if test="lastUpdater != null">
+                last_updater,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="faxNo != null">
+                fax_no,
+            </if>
+            <if test="creditCode != null">
+                credit_code,
+            </if>
+            <if test="marketingNo != null">
+                marketing_no,
+            </if>
+            <if test="bankUser != null">
+                bank_user,
+            </if>
+            <if test="systemName != null">
+                system_name,
+            </if>
+            <if test="acquirer != null">
+                acquirer,
+            </if>
+            <if test="fans != null">
+                fans,
+            </if>
+            <if test="systemIcon != null">
+                system_icon,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="companyName != null">
+                #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="companyShort != null">
+                #{companyShort,jdbcType=VARCHAR},
+            </if>
+            <if test="industryId != null">
+                #{industryId,jdbcType=VARCHAR},
+            </if>
+            <if test="contacter != null">
+                #{contacter,jdbcType=VARCHAR},
+            </if>
+            <if test="tel != null">
+                #{tel,jdbcType=VARCHAR},
+            </if>
+            <if test="district != null">
+                #{district,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="province != null">
+                #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="mainProducts != null">
+                #{mainProducts,jdbcType=VARCHAR},
+            </if>
+            <if test="mainBrand != null">
+                #{mainBrand,jdbcType=VARCHAR},
+            </if>
+            <if test="merchantType != null">
+                #{merchantType,jdbcType=INTEGER},
+            </if>
+            <if test="step != null">
+                #{step,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="bankNo != null">
+                #{bankNo,jdbcType=VARCHAR},
+            </if>
+            <if test="bankAddress != null">
+                #{bankAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="addTime != null">
+                #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="addUser != null">
+                #{addUser,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdate != null">
+                #{lastUpdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdater != null">
+                #{lastUpdater,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="faxNo != null">
+                #{faxNo,jdbcType=VARCHAR},
+            </if>
+            <if test="creditCode != null">
+                #{creditCode,jdbcType=VARCHAR},
+            </if>
+            <if test="marketingNo != null">
+                #{marketingNo,jdbcType=VARCHAR},
+            </if>
+            <if test="bankUser != null">
+                #{bankUser,jdbcType=VARCHAR},
+            </if>
+            <if test="systemName != null">
+                #{systemName,jdbcType=VARCHAR},
+            </if>
+            <if test="acquirer != null">
+                #{acquirer,jdbcType=VARCHAR},
+            </if>
+            <if test="fans != null">
+                #{fans,jdbcType=INTEGER},
+            </if>
+            <if test="systemIcon != null">
+                #{systemIcon,jdbcType=LONGVARBINARY},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.luer.dataManage.bean.MarketingMerchantExample"
+            resultType="java.lang.Integer">
+        select count(*) from marketing_merchant
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update marketing_merchant
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.companyName != null">
+                company_name = #{record.companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.companyShort != null">
+                company_short = #{record.companyShort,jdbcType=VARCHAR},
+            </if>
+            <if test="record.industryId != null">
+                industry_id = #{record.industryId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.contacter != null">
+                contacter = #{record.contacter,jdbcType=VARCHAR},
+            </if>
+            <if test="record.tel != null">
+                tel = #{record.tel,jdbcType=VARCHAR},
+            </if>
+            <if test="record.district != null">
+                district = #{record.district,jdbcType=VARCHAR},
+            </if>
+            <if test="record.city != null">
+                city = #{record.city,jdbcType=VARCHAR},
+            </if>
+            <if test="record.province != null">
+                province = #{record.province,jdbcType=VARCHAR},
+            </if>
+            <if test="record.country != null">
+                country = #{record.country,jdbcType=VARCHAR},
+            </if>
+            <if test="record.address != null">
+                address = #{record.address,jdbcType=VARCHAR},
+            </if>
+            <if test="record.mainProducts != null">
+                main_products = #{record.mainProducts,jdbcType=VARCHAR},
+            </if>
+            <if test="record.mainBrand != null">
+                main_brand = #{record.mainBrand,jdbcType=VARCHAR},
+            </if>
+            <if test="record.merchantType != null">
+                merchant_type = #{record.merchantType,jdbcType=INTEGER},
+            </if>
+            <if test="record.step != null">
+                step = #{record.step,jdbcType=INTEGER},
+            </if>
+            <if test="record.parentId != null">
+                parent_id = #{record.parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.bankNo != null">
+                bank_no = #{record.bankNo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.bankAddress != null">
+                bank_address = #{record.bankAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.remark != null">
+                remark = #{record.remark,jdbcType=VARCHAR},
+            </if>
+            <if test="record.addTime != null">
+                add_time = #{record.addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.addUser != null">
+                add_user = #{record.addUser,jdbcType=VARCHAR},
+            </if>
+            <if test="record.lastUpdate != null">
+                last_update = #{record.lastUpdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.lastUpdater != null">
+                last_updater = #{record.lastUpdater,jdbcType=VARCHAR},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=INTEGER},
+            </if>
+            <if test="record.faxNo != null">
+                fax_no = #{record.faxNo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.creditCode != null">
+                credit_code = #{record.creditCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.marketingNo != null">
+                marketing_no = #{record.marketingNo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.bankUser != null">
+                bank_user = #{record.bankUser,jdbcType=VARCHAR},
+            </if>
+            <if test="record.systemName != null">
+                system_name = #{record.systemName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.acquirer != null">
+                acquirer = #{record.acquirer,jdbcType=VARCHAR},
+            </if>
+            <if test="record.fans != null">
+                fans = #{record.fans,jdbcType=INTEGER},
+            </if>
+            <if test="record.systemIcon != null">
+                system_icon = #{record.systemIcon,jdbcType=LONGVARBINARY},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExampleWithBLOBs" parameterType="map">
+        update marketing_merchant
+        set id = #{record.id,jdbcType=VARCHAR},
+        company_name = #{record.companyName,jdbcType=VARCHAR},
+        company_short = #{record.companyShort,jdbcType=VARCHAR},
+        industry_id = #{record.industryId,jdbcType=VARCHAR},
+        contacter = #{record.contacter,jdbcType=VARCHAR},
+        tel = #{record.tel,jdbcType=VARCHAR},
+        district = #{record.district,jdbcType=VARCHAR},
+        city = #{record.city,jdbcType=VARCHAR},
+        province = #{record.province,jdbcType=VARCHAR},
+        country = #{record.country,jdbcType=VARCHAR},
+        address = #{record.address,jdbcType=VARCHAR},
+        main_products = #{record.mainProducts,jdbcType=VARCHAR},
+        main_brand = #{record.mainBrand,jdbcType=VARCHAR},
+        merchant_type = #{record.merchantType,jdbcType=INTEGER},
+        step = #{record.step,jdbcType=INTEGER},
+        parent_id = #{record.parentId,jdbcType=VARCHAR},
+        bank_no = #{record.bankNo,jdbcType=VARCHAR},
+        bank_address = #{record.bankAddress,jdbcType=VARCHAR},
+        remark = #{record.remark,jdbcType=VARCHAR},
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
+        add_user = #{record.addUser,jdbcType=VARCHAR},
+        last_update = #{record.lastUpdate,jdbcType=TIMESTAMP},
+        last_updater = #{record.lastUpdater,jdbcType=VARCHAR},
+        status = #{record.status,jdbcType=INTEGER},
+        fax_no = #{record.faxNo,jdbcType=VARCHAR},
+        credit_code = #{record.creditCode,jdbcType=VARCHAR},
+        marketing_no = #{record.marketingNo,jdbcType=VARCHAR},
+        bank_user = #{record.bankUser,jdbcType=VARCHAR},
+        system_name = #{record.systemName,jdbcType=VARCHAR},
+        acquirer = #{record.acquirer,jdbcType=VARCHAR},
+        fans = #{record.fans,jdbcType=INTEGER},
+        system_icon = #{record.systemIcon,jdbcType=LONGVARBINARY}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update marketing_merchant
+        set id = #{record.id,jdbcType=VARCHAR},
+        company_name = #{record.companyName,jdbcType=VARCHAR},
+        company_short = #{record.companyShort,jdbcType=VARCHAR},
+        industry_id = #{record.industryId,jdbcType=VARCHAR},
+        contacter = #{record.contacter,jdbcType=VARCHAR},
+        tel = #{record.tel,jdbcType=VARCHAR},
+        district = #{record.district,jdbcType=VARCHAR},
+        city = #{record.city,jdbcType=VARCHAR},
+        province = #{record.province,jdbcType=VARCHAR},
+        country = #{record.country,jdbcType=VARCHAR},
+        address = #{record.address,jdbcType=VARCHAR},
+        main_products = #{record.mainProducts,jdbcType=VARCHAR},
+        main_brand = #{record.mainBrand,jdbcType=VARCHAR},
+        merchant_type = #{record.merchantType,jdbcType=INTEGER},
+        step = #{record.step,jdbcType=INTEGER},
+        parent_id = #{record.parentId,jdbcType=VARCHAR},
+        bank_no = #{record.bankNo,jdbcType=VARCHAR},
+        bank_address = #{record.bankAddress,jdbcType=VARCHAR},
+        remark = #{record.remark,jdbcType=VARCHAR},
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
+        add_user = #{record.addUser,jdbcType=VARCHAR},
+        last_update = #{record.lastUpdate,jdbcType=TIMESTAMP},
+        last_updater = #{record.lastUpdater,jdbcType=VARCHAR},
+        status = #{record.status,jdbcType=INTEGER},
+        fax_no = #{record.faxNo,jdbcType=VARCHAR},
+        credit_code = #{record.creditCode,jdbcType=VARCHAR},
+        marketing_no = #{record.marketingNo,jdbcType=VARCHAR},
+        bank_user = #{record.bankUser,jdbcType=VARCHAR},
+        system_name = #{record.systemName,jdbcType=VARCHAR},
+        acquirer = #{record.acquirer,jdbcType=VARCHAR},
+        fans = #{record.fans,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.luer.dataManage.bean.MarketingMerchant">
+        update marketing_merchant
+        <set>
+            <if test="companyName != null">
+                company_name = #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="companyShort != null">
+                company_short = #{companyShort,jdbcType=VARCHAR},
+            </if>
+            <if test="industryId != null">
+                industry_id = #{industryId,jdbcType=VARCHAR},
+            </if>
+            <if test="contacter != null">
+                contacter = #{contacter,jdbcType=VARCHAR},
+            </if>
+            <if test="tel != null">
+                tel = #{tel,jdbcType=VARCHAR},
+            </if>
+            <if test="district != null">
+                district = #{district,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="province != null">
+                province = #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                country = #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="mainProducts != null">
+                main_products = #{mainProducts,jdbcType=VARCHAR},
+            </if>
+            <if test="mainBrand != null">
+                main_brand = #{mainBrand,jdbcType=VARCHAR},
+            </if>
+            <if test="merchantType != null">
+                merchant_type = #{merchantType,jdbcType=INTEGER},
+            </if>
+            <if test="step != null">
+                step = #{step,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="bankNo != null">
+                bank_no = #{bankNo,jdbcType=VARCHAR},
+            </if>
+            <if test="bankAddress != null">
+                bank_address = #{bankAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="addTime != null">
+                add_time = #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="addUser != null">
+                add_user = #{addUser,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdate != null">
+                last_update = #{lastUpdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdater != null">
+                last_updater = #{lastUpdater,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="faxNo != null">
+                fax_no = #{faxNo,jdbcType=VARCHAR},
+            </if>
+            <if test="creditCode != null">
+                credit_code = #{creditCode,jdbcType=VARCHAR},
+            </if>
+            <if test="marketingNo != null">
+                marketing_no = #{marketingNo,jdbcType=VARCHAR},
+            </if>
+            <if test="bankUser != null">
+                bank_user = #{bankUser,jdbcType=VARCHAR},
+            </if>
+            <if test="systemName != null">
+                system_name = #{systemName,jdbcType=VARCHAR},
+            </if>
+            <if test="acquirer != null">
+                acquirer = #{acquirer,jdbcType=VARCHAR},
+            </if>
+            <if test="fans != null">
+                fans = #{fans,jdbcType=INTEGER},
+            </if>
+            <if test="systemIcon != null">
+                system_icon = #{systemIcon,jdbcType=LONGVARBINARY},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.luer.dataManage.bean.MarketingMerchant">
+        update marketing_merchant
+        set company_name = #{companyName,jdbcType=VARCHAR},
+        company_short = #{companyShort,jdbcType=VARCHAR},
+        industry_id = #{industryId,jdbcType=VARCHAR},
+        contacter = #{contacter,jdbcType=VARCHAR},
+        tel = #{tel,jdbcType=VARCHAR},
+        district = #{district,jdbcType=VARCHAR},
+        city = #{city,jdbcType=VARCHAR},
+        province = #{province,jdbcType=VARCHAR},
+        country = #{country,jdbcType=VARCHAR},
+        address = #{address,jdbcType=VARCHAR},
+        main_products = #{mainProducts,jdbcType=VARCHAR},
+        main_brand = #{mainBrand,jdbcType=VARCHAR},
+        merchant_type = #{merchantType,jdbcType=INTEGER},
+        step = #{step,jdbcType=INTEGER},
+        parent_id = #{parentId,jdbcType=VARCHAR},
+        bank_no = #{bankNo,jdbcType=VARCHAR},
+        bank_address = #{bankAddress,jdbcType=VARCHAR},
+        remark = #{remark,jdbcType=VARCHAR},
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+        add_user = #{addUser,jdbcType=VARCHAR},
+        last_update = #{lastUpdate,jdbcType=TIMESTAMP},
+        last_updater = #{lastUpdater,jdbcType=VARCHAR},
+        status = #{status,jdbcType=INTEGER},
+        fax_no = #{faxNo,jdbcType=VARCHAR},
+        credit_code = #{creditCode,jdbcType=VARCHAR},
+        marketing_no = #{marketingNo,jdbcType=VARCHAR},
+        bank_user = #{bankUser,jdbcType=VARCHAR},
+        system_name = #{systemName,jdbcType=VARCHAR},
+        acquirer = #{acquirer,jdbcType=VARCHAR},
+        fans = #{fans,jdbcType=INTEGER},
+        system_icon = #{systemIcon,jdbcType=LONGVARBINARY}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.luer.dataManage.bean.MarketingMerchant">
+    update marketing_merchant
+    set company_name = #{companyName,jdbcType=VARCHAR},
+      company_short = #{companyShort,jdbcType=VARCHAR},
+      industry_id = #{industryId,jdbcType=VARCHAR},
+      contacter = #{contacter,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      district = #{district,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      country = #{country,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      main_products = #{mainProducts,jdbcType=VARCHAR},
+      main_brand = #{mainBrand,jdbcType=VARCHAR},
+      merchant_type = #{merchantType,jdbcType=INTEGER},
+      step = #{step,jdbcType=INTEGER},
+      parent_id = #{parentId,jdbcType=VARCHAR},
+      bank_no = #{bankNo,jdbcType=VARCHAR},
+      bank_address = #{bankAddress,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      add_user = #{addUser,jdbcType=VARCHAR},
+      last_update = #{lastUpdate,jdbcType=TIMESTAMP},
+      last_updater = #{lastUpdater,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      fax_no = #{faxNo,jdbcType=VARCHAR},
+      credit_code = #{creditCode,jdbcType=VARCHAR},
+      marketing_no = #{marketingNo,jdbcType=VARCHAR},
+      bank_user = #{bankUser,jdbcType=VARCHAR},
+      system_name = #{systemName,jdbcType=VARCHAR},
+      acquirer = #{acquirer,jdbcType=VARCHAR},
+      fans = #{fans,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+  /*select * from marketing_merchant*/
+select m.id as id,m.company_name,m.company_short,
+m.industry_id,m.contacter, m.tel,
+m.district,m.city, m.province,
+m.country,m.address, m.main_products,
+m.main_brand,m.merchant_type,m.step,
+m.parent_id,m.bank_no, m.bank_address,
+m.remark, m.add_time, m.add_user,
+m.last_update, m.last_updater, m.status,
+m.fax_no, m.credit_code,m.marketing_no,m.bank_user,m.acquirer,m.fans,
+a.company_name as parentName,bi.industry_name as industryName
+      from marketing_merchant m
+      left join marketing_merchant a  on m.parent_id=a.id
+      left join base_industry bi on m.industry_id=bi.id WHERE m.merchant_type IN (0,3)
+  </select>
+
+    <!--获得所有企业商户，不包括代理商-->
+    <select id="selectEnterpriseMerchant" resultMap="BaseResultMap">
+select m.id as id,m.company_name,m.company_short,
+m.industry_id,m.contacter, m.tel,
+m.district,m.city, m.province,
+m.country,m.address, m.main_products,
+m.main_brand,m.merchant_type,m.step,
+m.parent_id,m.bank_no, m.bank_address,
+m.remark, m.add_time, m.add_user,
+m.last_update, m.last_updater, m.status,m.acquirer,m.fans,
+m.fax_no, m.credit_code,m.marketing_no,m.bank_user,
+a.company_name as parentName,bi.industry_name as industryName
+      from marketing_merchant m
+      left join marketing_merchant a  on m.parent_id=a.id
+      left join base_industry bi on m.industry_id=bi.id
+      where m.merchant_type=1
+  </select>
+    <select id="selectByTypeAndStep" resultMap="BaseResultMap">
+    select m.id as id,m.company_name,m.company_short,
+    m.industry_id,m.contacter, m.tel,
+    m.district,m.city, m.province,
+    m.country,m.address, m.main_products,
+    m.main_brand,m.merchant_type,m.step,
+    m.parent_id,m.bank_no, m.bank_address,
+    m.remark, m.add_time, m.add_user,
+    m.last_update, m.last_updater, m.status,m.acquirer,m.fans,
+    m.fax_no, m.credit_code,m.marketing_no,m.bank_user,
+    a.company_name as parentName,bi.industry_name as industryName
+    from marketing_merchant m
+    left join marketing_merchant a  on m.parent_id=a.id
+    left join base_industry bi on m.industry_id=bi.id
+    where m.merchant_type=#{merchantType} and m.step=#{step}
+
+
+</select>
+    <select id="selectHead" resultMap="BaseResultMap">
+    select m.id as id,m.company_name,m.company_short,
+    m.industry_id,m.contacter, m.tel,
+    m.district,m.city, m.province,
+    m.country,m.address, m.main_products,
+    m.main_brand,m.merchant_type,m.step,
+    m.parent_id,m.bank_no, m.bank_address,
+    m.remark, m.add_time, m.add_user,
+    m.last_update, m.last_updater, m.status,
+    m.fax_no, m.credit_code,m.marketing_no,m.bank_user,m.acquirer,m.fans,
+    a.company_name as parentName,bi.industry_name as industryName
+    from marketing_merchant m
+    left join marketing_merchant a  on m.parent_id=a.id
+    left join base_industry bi on m.industry_id=bi.id
+    where m.id=#{id}
+
+    </select>
+    <select id="selectByTypeAndParentId" resultMap="BaseResultMap">
+        select m.id as id,m.company_name,m.company_short,
+        m.industry_id,m.contacter, m.tel,
+        m.district,m.city, m.province,
+        m.country,m.address, m.main_products,
+        m.main_brand,m.merchant_type,m.step,
+        m.parent_id,m.bank_no, m.bank_address,
+        m.remark, m.add_time, m.add_user,
+        m.last_update, m.last_updater, m.status,
+        m.fax_no, m.credit_code,m.marketing_no,m.bank_user,
+        a.company_name as parentName,bi.industry_name as industryName,m.acquirer,m.fans
+        from marketing_merchant m
+        left join marketing_merchant a  on m.parent_id=a.id
+        left join base_industry bi on m.industry_id=bi.id
+        where m.merchant_type=#{merchantType} and m.parent_id=#{parentId} order by m.add_time desc
+
+
+    </select>
+    <select id="selectMerchantByType" resultMap="BaseResultMap">
+        select m.id as id,m.company_name,m.company_short,
+        m.industry_id,m.contacter, m.tel,
+        m.district,m.city, m.province,
+        m.country,m.address, m.main_products,
+        m.main_brand,m.merchant_type,m.step,
+        m.parent_id,m.bank_no, m.bank_address,
+        m.remark, m.add_time, m.add_user,
+        m.last_update, m.last_updater, m.status,
+        m.fax_no, m.credit_code,m.marketing_no,m.bank_user,
+        a.company_name as parentName,bi.industry_name as industryName,m.acquirer,m.fans
+        from marketing_merchant m
+        left join marketing_merchant a  on m.parent_id=a.id
+        left join base_industry bi on m.industry_id=bi.id
+        where m.merchant_type=1 order by m.add_time desc
+    </select>
+    <select id="selectByType" resultMap="BaseResultMap">
+        select m.id as id,m.company_name,m.add_time,
+        a.company_name as parentName,count(b.phone) as fans
+        from marketing_merchant m
+        left join marketing_merchant a  on m.parent_id=a.id
+        left JOIN marketing_member b on m.id=b.merchant_id
+        where m.merchant_type=1 GROUP BY m.id  order by m.add_time desc
+    </select>
+    <select id="selectById" resultMap="BaseResultMap">
+        select m.id as id,m.company_name,m.company_short,
+        m.industry_id,m.contacter, m.tel,
+        m.district,m.city, m.province,
+        m.country,m.address, m.main_products,
+        m.main_brand,m.merchant_type,m.step,
+        m.parent_id,m.bank_no, m.bank_address,
+        m.remark, m.add_time, m.add_user,
+        m.last_update, m.last_updater, m.status,
+        m.fax_no, m.credit_code,m.marketing_no,m.bank_user,m.system_name,
+        a.company_name as parentName,bi.industry_name as industryName,m.acquirer,m.fans
+        from marketing_merchant m
+        left join marketing_merchant a  on m.parent_id=a.id
+        left join base_industry bi on m.industry_id=bi.id
+        where m.id=#{id}
+
+
+    </select>
+    <select id="getParentMerchant" resultMap="BaseResultMap">
+
+      SELECT * FROM marketing_merchant WHERE merchant_type=0 order by add_time desc
+
+    </select>
+    <select id="selectByCompanyName" resultMap="BaseResultMap">
+        select m.id as id,m.company_name,m.company_short,
+        m.industry_id,m.contacter, m.tel,
+        m.district,m.city, m.province,
+        m.country,m.address, m.main_products,
+        m.main_brand,m.merchant_type,m.step,
+        m.parent_id,m.bank_no, m.bank_address,
+        m.remark, m.add_time, m.add_user,
+        m.last_update, m.last_updater, m.status,
+        m.fax_no, m.credit_code,m.marketing_no,m.bank_user,
+        a.company_name as parentName,bi.industry_name as industryName,m.acquirer,m.fans
+        from marketing_merchant m
+        left join marketing_merchant a  on m.parent_id=a.id
+        left join base_industry bi on m.industry_id=bi.id
+        where m.merchant_type=#{merchantType} and m.parent_id=#{parentId} and m.company_name like CONCAT(CONCAT('%', #{selectValue}), '%')
+order by m.add_time desc
+
+    </select>
+    <select id="selectByIndustryName" resultMap="BaseResultMap">
+        select m.id as id,m.company_name,m.company_short,
+        m.industry_id,m.contacter, m.tel,
+        m.district,m.city, m.province,
+        m.country,m.address, m.main_products,
+        m.main_brand,m.merchant_type,m.step,
+        m.parent_id,m.bank_no, m.bank_address,
+        m.remark, m.add_time, m.add_user,
+        m.last_update, m.last_updater, m.status,
+        m.fax_no, m.credit_code,m.marketing_no,m.bank_user,
+        a.company_name as parentName,bi.industry_name as industryName,m.acquirer,m.fans
+        from marketing_merchant m
+        left join marketing_merchant a  on m.parent_id=a.id
+        left join base_industry bi on m.industry_id=bi.id
+        where m.merchant_type=#{merchantType} and m.parent_id=#{parentId} and  bi.industry_name like CONCAT(CONCAT('%', #{selectValue}), '%')
+order by m.add_time desc
+
+    </select>
+    <select id="selectByAddress" resultMap="BaseResultMap">
+        select m.id as id,m.company_name,m.company_short,
+        m.industry_id,m.contacter, m.tel,
+        m.district,m.city, m.province,
+        m.country,m.address, m.main_products,
+        m.main_brand,m.merchant_type,m.step,
+        m.parent_id,m.bank_no, m.bank_address,
+        m.remark, m.add_time, m.add_user,
+        m.last_update, m.last_updater, m.status,
+        m.fax_no, m.credit_code,m.marketing_no,m.bank_user,
+        a.company_name as parentName,bi.industry_name as industryName,m.acquirer,m.fans
+        from marketing_merchant m
+        left join marketing_merchant a  on m.parent_id=a.id
+        left join base_industry bi on m.industry_id=bi.id
+        where m.merchant_type=#{merchantType} and m.parent_id=#{parentId} and  m.address like CONCAT(CONCAT('%', #{selectValue}), '%')
+order by m.add_time desc
+
+    </select>
+    <select id="selectByMainProducts" resultMap="BaseResultMap">
+        select m.id as id,m.company_name,m.company_short,
+        m.industry_id,m.contacter, m.tel,
+        m.district,m.city, m.province,
+        m.country,m.address, m.main_products,
+        m.main_brand,m.merchant_type,m.step,
+        m.parent_id,m.bank_no, m.bank_address,
+        m.remark, m.add_time, m.add_user,
+        m.last_update, m.last_updater, m.status,
+        m.fax_no, m.credit_code,m.marketing_no,m.bank_user,
+        a.company_name as parentName,bi.industry_name as industryName,m.acquirer,m.fans
+        from marketing_merchant m
+        left join marketing_merchant a  on m.parent_id=a.id
+        left join base_industry bi on m.industry_id=bi.id
+        where m.merchant_type=#{merchantType} and m.parent_id=#{parentId} and  m.main_products like CONCAT(CONCAT('%', #{selectValue}), '%')
+order by m.add_time desc
+
+    </select>
+    <select id="selectByMainBrand" resultMap="BaseResultMap">
+        select m.id as id,m.company_name,m.company_short,
+        m.industry_id,m.contacter, m.tel,
+        m.district,m.city, m.province,
+        m.country,m.address, m.main_products,
+        m.main_brand,m.merchant_type,m.step,
+        m.parent_id,m.bank_no, m.bank_address,
+        m.remark, m.add_time, m.add_user,
+        m.last_update, m.last_updater, m.status,
+        m.fax_no, m.credit_code,m.marketing_no,m.bank_user,
+        a.company_name as parentName,bi.industry_name as industryName,m.acquirer,m.fans
+        from marketing_merchant m
+        left join marketing_merchant a  on m.parent_id=a.id
+        left join base_industry bi on m.industry_id=bi.id
+        where m.merchant_type=#{merchantType} and m.parent_id=#{parentId} and m.main_brand=like CONCAT(CONCAT('%', #{selectValue}), '%')
+order by m.add_time desc
+
+    </select>
+    <select id="getParentCompany" resultMap="BaseResultMap">
+        SELECT * from marketing_merchant WHERE parent_id=#{parentId} order by add_time desc
+    </select>
+    <update id="updateSMSAppInfo" parameterType="com.luer.shortMessage.bean.SMSApp">
+      update marketing_merchant set appId=#{appId},appKey=#{appKey},appSecret=#{appSecret}
+            where id= #{merchantId}
+    </update>
+    <select id="getSMSApp" resultType="com.luer.shortMessage.bean.SMSApp">
+    select id as merchantId,appId,appKey,appSecret from marketing_merchant where id=#{merchantId}
+</select>
+    <select id="getFunsSum" resultType="int">
+ select sum(fans)
+  from marketing_merchant
+    </select>
+    <select id="getMerchantCountToday" resultType="int">
+ select COUNT(*)
+  from marketing_merchant WHERE DATE_FORMAT(add_time,'%Y%m%d')=#{mytime}
+    </select>
+
+</mapper>

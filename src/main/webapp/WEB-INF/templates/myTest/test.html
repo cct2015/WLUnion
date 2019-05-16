@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8">
+<title>Title</title>
+
+<script src="../static/jqGrid/js/jquery.min.js"></script>
+<script src="../static/vendors/bootstrap/dist/js/bootstrap.js"></script>
+<script src="../static/js/jquery-ui.js"></script>
+
+<link rel="stylesheet" href="../static/css/bootstrap.min.css">
+<!--<link href="../static/js/summernote/summernote.css" rel="stylesheet"/>-->
+<!--<link href="../static/js/summernote/summernote-bs3.css" rel="stylesheet"/>-->
+<!--<script src="../static/js/summernote/summernote.js"></script>-->
+<!--<script src="../static/js/summernote/summernote-zh-CN.js"></script>-->
+
+    <script th:inline="javascript">
+
+        function GetAllWxInfo(merchantId) {
+            if (merchantId == null || merchantId == "")
+                return;
+
+            $.ajax({
+                url: "../wxExecute/getAllWxInfo",
+                dataType: "json",
+                type: 'POST',
+                data: {merchantId: merchantId},
+                cache: false,
+                contentType:'application/x-www-form-urlencoded; charset=UTF-8',
+                success: function (result) {
+                    var htmlStr=JSON.stringify(result);
+                    // var htmlStr = "<无>";
+                    // var count = 0;
+                    // var radioId = "";
+                    // $.each(result, function (index, item) {
+                    //     count = index + 1;
+                    //     radioId = "radio" + count;
+                    //     if (htmlStr == "<无>") {
+                    //         htmlStr = "<input type=\"radio\" checked=\"checked\"   name=\"wx\" id=\"" + radioId + "\" value=\"" + item.appId + "\"/>" + item.appName + "";
+                    //         // $("#appIdCover").val(item.appId);
+                    //         // $("#appIdImg").val(item.appId);
+                    //         // if( $("#divtag").length>0)
+                    //         // {
+                    //         //     //标签列表
+                    //         //     getwxTagList(item.appId);
+                    //         // }
+                    //     }
+                    //     else {
+                    //         htmlStr += "&nbsp; &nbsp; &nbsp;&nbsp;<input type=\"radio\" onclick=\"getAppId();\" name=\"wx\" id=\"" + radioId + "\" value=\"" + item.appId + "\"/>" + item.appName + "";
+                    //     }
+                    //
+                    // });
+
+                    //   $('#wxCount').val(count);
+                    $('#wxInfoDiv').html(htmlStr);
+
+                },
+                error: function (error) {
+                    alert("系统错误:" + error);
+                }
+            });
+        }
+
+
+
+
+//         $(function()
+//             {
+//
+// // $('#summernote').summernote({
+// // height: '220px',
+// // lang: 'zh-CN'
+// // // callbacks: {
+// // //     onImageUpload: function (files) {
+// // //         //    sendFile(files[0], this);
+// // //     }
+// // // }
+// // });
+//             }
+//         );
+        // function save()
+        // {
+        //     var val11=$('#val').val();
+        //     $.ajax({
+        //         url: "/test/testA",
+        //         dataType: "json",
+        //         data: {val: val11},
+        //         type: 'POST',
+        //         cache: false,
+        //         success: function (response) {
+        //             alert(response.data);
+        //         }
+        //     });
+        // }
+        //
+        // function look()
+        // {
+        //
+        //     $.ajax({
+        //         url: "/test/gettest",
+        //         dataType: "json",
+        //         type: 'POST',
+        //         cache: false,
+        //         success: function (response) {
+        //             alert(response.data);
+        //         }
+        //     });
+        // }
+        //  var prefix = "${ctx}/system/notice";
+        //   <%--function sendFile(file, obj) {--%>
+        //   <%--var data = new FormData();--%>
+        //   <%--data.append("file", file);--%>
+        //   <%--$.ajax({--%>
+        //       <%--type: "POST",--%>
+        //   <%--url: "${ctx}/common/upload",--%>
+        //   <%--data: data,--%>
+        //   <%--cache: false,--%>
+        //   <%--contentType: false,--%>
+        //   <%--processData: false,--%>
+        //   <%--dataType: 'json',--%>
+        //   <%--success: function (result) {--%>
+        //   <%--if (result.code == web_status.SUCCESS) {--%>
+        //   <%--$(obj).summernote('editor.insertImage', result.url, result.fileName);--%>
+        //   <%--} else {--%>
+        //   <%--$.modal.alertError(result.msg);--%>
+        //   <%--}--%>
+        //   <%--},--%>
+        //   <%--error: function (error) {--%>
+        //   <%--$.modal.alertWarning("图片上传失败。");--%>
+        //   <%--}--%>
+        //   <%--});--%>
+        //   <%--}--%>
+    </script>
+</head>
+<body class="nav-md">
+<div class="right_col" role="main">
+<div class="container body">
+    <div id="wxInfoDiv"></div>
+ <input type="text" id="val" name="val" value="AAA"/>
+<input type="button" value="提交" onclick="save();" />
+<input type="text" name="getval" id="getval" value=""/>
+<input type="button" value="查看" onclick="look();"  />
+    <br />
+    <input type="button" value="获得公众号" onclick="GetAllWxInfo('23aa85a9a0e54c64b0d6e32359d8393a');"  />
+
+</div></div>
+
+<div  style="font-size: 14px;width: 550px;">
+<input id="noticeContent" name="noticeContent" type="hidden">
+<div id="summernote"></div>
+
+</div>
+
+</body>
+
+</html>
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+    <!--<meta charset="utf-8">-->
+    <!--<title>Bootstrap 实例 - 自定义缩略图</title>-->
+    <!--<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">-->
+    <!--<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>-->
+    <!--<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+<!--</head>-->
+
+<!--<body class="nav-md">-->
+<!--<div class="right_col" role="main">-->
+    <!--<div class="container body">-->
+        <!--<div class="row">-->
+        <!--<div class="col-sm-6 col-md-3">-->
+            <!--<div class="thumbnail">-->
+                <!--<img src="/wp-content/uploads/2014/06/kittens.jpg"-->
+                     <!--alt="通用的占位符缩略图">-->
+                <!--<div class="caption">-->
+                    <!--<h3>缩略图标签</h3>-->
+                    <!--<p>一些示例文本。一些示例文本。</p>-->
+                    <!--<p>-->
+                        <!--<a href="#" class="btn btn-primary" role="button">-->
+                            <!--按钮-->
+                        <!--</a>-->
+                        <!--<a href="#" class="btn btn-default" role="button">-->
+                            <!--按钮-->
+                        <!--</a>-->
+                    <!--</p>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-sm-6 col-md-3">-->
+            <!--<div class="thumbnail">-->
+                <!--<img src="/wp-content/uploads/2014/06/kittens.jpg"-->
+                     <!--alt="通用的占位符缩略图">-->
+                <!--<div class="caption">-->
+                    <!--<h3>缩略图标签</h3>-->
+                    <!--<p>一些示例文本。一些示例文本。</p>-->
+                    <!--<p>-->
+                        <!--<a href="#" class="btn btn-primary" role="button">-->
+                            <!--按钮-->
+                        <!--</a>-->
+                        <!--<a href="#" class="btn btn-default" role="button">-->
+                            <!--按钮-->
+                        <!--</a>-->
+                    <!--</p>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-sm-6 col-md-3">-->
+            <!--<div class="thumbnail">-->
+                <!--<img src="/wp-content/uploads/2014/06/kittens.jpg"-->
+                     <!--alt="通用的占位符缩略图">-->
+                <!--<div class="caption">-->
+                    <!--<h3>缩略图标签</h3>-->
+                    <!--<p>一些示例文本。一些示例文本。</p>-->
+                    <!--<p>-->
+                        <!--<a href="#" class="btn btn-primary" role="button">-->
+                            <!--按钮-->
+                        <!--</a>-->
+                        <!--<a href="#" class="btn btn-default" role="button">-->
+                            <!--按钮-->
+                        <!--</a>-->
+                    <!--</p>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-sm-6 col-md-3">-->
+            <!--<div class="thumbnail">-->
+                <!--<img src="/wp-content/uploads/2014/06/kittens.jpg"-->
+                     <!--alt="通用的占位符缩略图">-->
+                <!--<div class="caption">-->
+                    <!--<h3>缩略图标签</h3>-->
+                    <!--<p>一些示例文本。一些示例文本。</p>-->
+                    <!--<p>-->
+                        <!--<a href="#" class="btn btn-primary" role="button">-->
+                            <!--按钮-->
+                        <!--</a>-->
+                        <!--<a href="#" class="btn btn-default" role="button">-->
+                            <!--按钮-->
+                        <!--</a>-->
+                    <!--</p>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+        <!--<div class="row">-->
+            <!--<div class="col-sm-6 col-md-3">-->
+                <!--<div class="thumbnail">-->
+                    <!--<img src="/wp-content/uploads/2014/06/kittens.jpg"-->
+                         <!--alt="通用的占位符缩略图">-->
+                    <!--<div class="caption">-->
+                        <!--<h3>缩略图标签</h3>-->
+                        <!--<p>一些示例文本。一些示例文本。</p>-->
+                        <!--<p>-->
+                            <!--<a href="#" class="btn btn-primary" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                            <!--<a href="#" class="btn btn-default" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-6 col-md-3">-->
+                <!--<div class="thumbnail">-->
+                    <!--<img src="/wp-content/uploads/2014/06/kittens.jpg"-->
+                         <!--alt="通用的占位符缩略图">-->
+                    <!--<div class="caption">-->
+                        <!--<h3>缩略图标签</h3>-->
+                        <!--<p>一些示例文本。一些示例文本。</p>-->
+                        <!--<p>-->
+                            <!--<a href="#" class="btn btn-primary" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                            <!--<a href="#" class="btn btn-default" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-6 col-md-3">-->
+                <!--<div class="thumbnail">-->
+                    <!--<img src="/wp-content/uploads/2014/06/kittens.jpg"-->
+                         <!--alt="通用的占位符缩略图">-->
+                    <!--<div class="caption">-->
+                        <!--<h3>缩略图标签</h3>-->
+                        <!--<p>一些示例文本。一些示例文本。</p>-->
+                        <!--<p>-->
+                            <!--<a href="#" class="btn btn-primary" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                            <!--<a href="#" class="btn btn-default" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-6 col-md-3">-->
+                <!--<div class="thumbnail">-->
+                    <!--<img src="/wp-content/uploads/2014/06/kittens.jpg"-->
+                         <!--alt="通用的占位符缩略图">-->
+                    <!--<div class="caption">-->
+                        <!--<h3>缩略图标签</h3>-->
+                        <!--<p>一些示例文本。一些示例文本。</p>-->
+                        <!--<p>-->
+                            <!--<a href="#" class="btn btn-primary" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                            <!--<a href="#" class="btn btn-default" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row">-->
+            <!--<div class="col-sm-6 col-md-3">-->
+                <!--<div class="thumbnail">-->
+                    <!--<img src="/wp-content/uploads/2014/06/kittens.jpg"-->
+                         <!--alt="通用的占位符缩略图">-->
+                    <!--<div class="caption">-->
+                        <!--<h3>缩略图标签</h3>-->
+                        <!--<p>一些示例文本。一些示例文本。</p>-->
+                        <!--<p>-->
+                            <!--<a href="#" class="btn btn-primary" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                            <!--<a href="#" class="btn btn-default" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-6 col-md-3">-->
+                <!--<div class="thumbnail">-->
+                    <!--<img src="/wp-content/uploads/2014/06/kittens.jpg"-->
+                         <!--alt="通用的占位符缩略图">-->
+                    <!--<div class="caption">-->
+                        <!--<h3>缩略图标签</h3>-->
+                        <!--<p>一些示例文本。一些示例文本。</p>-->
+                        <!--<p>-->
+                            <!--<a href="#" class="btn btn-primary" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                            <!--<a href="#" class="btn btn-default" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-6 col-md-3">-->
+                <!--<div class="thumbnail">-->
+                    <!--<img src="/wp-content/uploads/2014/06/kittens.jpg"-->
+                         <!--alt="通用的占位符缩略图">-->
+                    <!--<div class="caption">-->
+                        <!--<h3>缩略图标签</h3>-->
+                        <!--<p>一些示例文本。一些示例文本。</p>-->
+                        <!--<p>-->
+                            <!--<a href="#" class="btn btn-primary" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                            <!--<a href="#" class="btn btn-default" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-6 col-md-3">-->
+                <!--<div class="thumbnail">-->
+                    <!--<img src="/wp-content/uploads/2014/06/kittens.jpg"-->
+                         <!--alt="通用的占位符缩略图">-->
+                    <!--<div class="caption">-->
+                        <!--<h3>缩略图标签</h3>-->
+                        <!--<p>一些示例文本。一些示例文本。</p>-->
+                        <!--<p>-->
+                            <!--<a href="#" class="btn btn-primary" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                            <!--<a href="#" class="btn btn-default" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row">-->
+            <!--<div class="col-sm-6 col-md-3">-->
+                <!--<div class="thumbnail">-->
+                    <!--<img src="/wp-content/uploads/2014/06/kittens.jpg"-->
+                         <!--alt="通用的占位符缩略图">-->
+                    <!--<div class="caption">-->
+                        <!--<h3>缩略图标签</h3>-->
+                        <!--<p>一些示例文本。一些示例文本。</p>-->
+                        <!--<p>-->
+                            <!--<a href="#" class="btn btn-primary" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                            <!--<a href="#" class="btn btn-default" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-6 col-md-3">-->
+                <!--<div class="thumbnail">-->
+                    <!--<img src="/wp-content/uploads/2014/06/kittens.jpg"-->
+                         <!--alt="通用的占位符缩略图">-->
+                    <!--<div class="caption">-->
+                        <!--<h3>缩略图标签</h3>-->
+                        <!--<p>一些示例文本。一些示例文本。</p>-->
+                        <!--<p>-->
+                            <!--<a href="#" class="btn btn-primary" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                            <!--<a href="#" class="btn btn-default" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-6 col-md-3">-->
+                <!--<div class="thumbnail">-->
+                    <!--<img src="/wp-content/uploads/2014/06/kittens.jpg"-->
+                         <!--alt="通用的占位符缩略图">-->
+                    <!--<div class="caption">-->
+                        <!--<h3>缩略图标签</h3>-->
+                        <!--<p>一些示例文本。一些示例文本。</p>-->
+                        <!--<p>-->
+                            <!--<a href="#" class="btn btn-primary" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                            <!--<a href="#" class="btn btn-default" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-6 col-md-3">-->
+                <!--<div class="thumbnail">-->
+                    <!--<img src="/wp-content/uploads/2014/06/kittens.jpg"-->
+                         <!--alt="通用的占位符缩略图">-->
+                    <!--<div class="caption">-->
+                        <!--<h3>缩略图标签</h3>-->
+                        <!--<p>一些示例文本。一些示例文本。</p>-->
+                        <!--<p>-->
+                            <!--<a href="#" class="btn btn-primary" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                            <!--<a href="#" class="btn btn-default" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row">-->
+            <!--<div class="col-sm-6 col-md-3">-->
+                <!--<div class="thumbnail">-->
+                    <!--<img src="/wp-content/uploads/2014/06/kittens.jpg"-->
+                         <!--alt="通用的占位符缩略图">-->
+                    <!--<div class="caption">-->
+                        <!--<h3>缩略图标签</h3>-->
+                        <!--<p>一些示例文本。一些示例文本。</p>-->
+                        <!--<p>-->
+                            <!--<a href="#" class="btn btn-primary" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                            <!--<a href="#" class="btn btn-default" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-6 col-md-3">-->
+                <!--<div class="thumbnail">-->
+                    <!--<img src="/wp-content/uploads/2014/06/kittens.jpg"-->
+                         <!--alt="通用的占位符缩略图">-->
+                    <!--<div class="caption">-->
+                        <!--<h3>缩略图标签</h3>-->
+                        <!--<p>一些示例文本。一些示例文本。</p>-->
+                        <!--<p>-->
+                            <!--<a href="#" class="btn btn-primary" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                            <!--<a href="#" class="btn btn-default" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-6 col-md-3">-->
+                <!--<div class="thumbnail">-->
+                    <!--<img src="/wp-content/uploads/2014/06/kittens.jpg"-->
+                         <!--alt="通用的占位符缩略图">-->
+                    <!--<div class="caption">-->
+                        <!--<h3>缩略图标签</h3>-->
+                        <!--<p>一些示例文本。一些示例文本。</p>-->
+                        <!--<p>-->
+                            <!--<a href="#" class="btn btn-primary" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                            <!--<a href="#" class="btn btn-default" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-6 col-md-3">-->
+                <!--<div class="thumbnail">-->
+                    <!--<img src="/wp-content/uploads/2014/06/kittens.jpg"-->
+                         <!--alt="通用的占位符缩略图">-->
+                    <!--<div class="caption">-->
+                        <!--<h3>缩略图标签</h3>-->
+                        <!--<p>一些示例文本。一些示例文本。</p>-->
+                        <!--<p>-->
+                            <!--<a href="#" class="btn btn-primary" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                            <!--<a href="#" class="btn btn-default" role="button">-->
+                                <!--按钮-->
+                            <!--</a>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<nav aria-label="Page navigation example" style="float: right; margin-bottom: 0px">-->
+            <!--<ul class="pagination">-->
+                <!--<li class="page-item"><a class="page-link" href="#">Previous</a></li>-->
+                <!--<li class="page-item"><a class="page-link" href="#">1</a></li>-->
+                <!--<li class="page-item"><a class="page-link" href="#">2</a></li>-->
+                <!--<li class="page-item"><a class="page-link" href="#">3</a></li>-->
+                <!--<li class="page-item"><a class="page-link" href="#">Next</a></li>-->
+            <!--</ul>-->
+        <!--</nav>-->
+    <!--</div>-->
+
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->

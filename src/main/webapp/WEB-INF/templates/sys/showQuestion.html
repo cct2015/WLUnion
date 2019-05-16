@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>问题详解</title>
+    <input type="hidden"  id="id" th:value="${Myid }" />
+
+
+</head>
+<body>
+<div class="container body" style="z-index: -1">
+    <div class="container" id="container" style="margin-bottom: 0px">
+        <form id="myform" class="myform">
+
+            <div class="row" style="width: 100%;">
+                <div class="form-group col-md-6" style=" width: 1000px;">
+                    <label for="question" class="col-sm-4 control-label" style="line-height:20px ; font-size: 14px; width: 135px; ">提出问题:</label>
+                    <div class="col-sm-5" style="font-size: 14px;width: 806px;" id="question">
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="width: 100%;display:block "  id="contentDiv">
+                <div class="form-group col-md-6" style="width: 100%;margin-bottom: 0px;">
+                    <label class="col-sm-4 control-label" style="font-size: 14px; width: 135px;">问题回答的内容:</label>
+                    <div class="col-sm-5" style="font-size: 14px;width: 650px;margin-bottom: 0px" id="answer">
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script th:inline="javascript">
+    $(function(){
+        var Myid=$("#id").val();
+        getDetail(Myid);
+
+    });
+function getDetail(id)
+{
+    $.ajax({
+        url:"../qamanagePlan/allShow",
+        data:{id:id},
+        dataType:"json",
+        type:'POST',
+        cache:false,
+        success:function (data) {
+            // var html="";
+            $.each(data,function (index,item) {
+                $("#question").html(item.question);
+                $("#answer").html(item.answer);
+                // alert(item.question);
+                // $("#question").html(html="<h2>"+item.question+"</h2>");
+                // $("#answer").html(html="<p>"+item.answer+"</p>");
+                // $("#answer").innerHTML+="<br \><p>"+item.answer+"</p>"
+             })
+            }
+        })
+}
+</script>
+</html>

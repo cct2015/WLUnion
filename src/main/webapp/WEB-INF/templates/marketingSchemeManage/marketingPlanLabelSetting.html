@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <!--<script th:inline="javascript">-->
+        <!--var curWwwPath=window.document.location.href;-->
+        <!--var pathName=window.document.location.pathname;-->
+        <!--var pos=curWwwPath.indexOf(pathName);-->
+        <!--var ctxPath=curWwwPath.substring(0,pos);-->
+    <!--</script>-->
+
+</head>
+<style>
+    .labelstyle
+    {
+        font-size: 14px;
+        height: 30px;
+    }
+</style>
+<body>
+<form class="form-horizontal" role="form" id="myform">
+    <table style="width: 600px;">
+        <tr>
+            <td class="labelstyle" id="title" name="title">
+
+            </td>
+            <td class="labelstyle"  id="merchantId" name="merchantId">
+
+            </td>
+            <td  class="labelstyle"  id="content" name="content">
+
+            </td>
+        </tr>
+
+        <tr>
+            <td class="labelstyle" id="province" name="province">
+
+            </td>
+            <td class="labelstyle"  id="city" name="city">
+
+            </td>
+            <td class="labelstyle"  id="district" name="district">
+
+            </td>
+        </tr>
+
+        <tr>
+            <td class="labelstyle" id="isDifferent" name="isDifferent">
+
+            </td>
+            <td class="labelstyle"  id="beginTime" name="beginTime">
+
+            </td>
+            <td class="labelstyle"  id="endTime" name="endTime">
+
+            </td>
+        </tr>
+
+
+        <tr>
+            <td class="labelstyle" id="name" name="name">
+
+            </td>
+            <td class="labelstyle"  id="tell" name="tell">
+
+            </td>
+            <td class="labelstyle"  id="describe" name="describe">
+
+            </td>
+        </tr>
+
+
+        <tr>
+            <td colspan="3" class="labelstyle">
+              营销佣金：
+            </td>
+
+        </tr>
+
+        <tr>
+            <td colspan="3" class="labelstyle" id="yongjin" name="yongjin">
+            </td>
+
+        </tr>
+
+        <tr>
+            <td colspan="3" class="labelstyle">券码营销：
+            </td>
+
+        </tr>
+        <tr>
+            <td colspan="3" class="labelstyle"  id="quanma" name="quanma" >
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" class="labelstyle" id="otherDescripe" name="otherDescripe">
+            </td>
+        </tr>
+        <tr  class="labelstyle" >
+            <td>
+                选择标签：
+            </td>
+            <td colspan="2">
+
+                <ul id="tree" class="ztree"></ul>
+
+            </td>
+
+        </tr>
+        <tr>
+            <td colspan="3" class="labelstyle" align="center" >
+                <input type="button" value="提 交" onclick="submitSetting();" />
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+<script type="text/javascript" src="/static/zTree/js/jquery.ztree.core.js"></script>
+<link rel="stylesheet" href="/static/zTree/css/css/zTreeStyle.css" type="text/css">
+<link href="/static/zTree/css/metroStyle/metroStyle.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="/static/zTree/js/jquery.ztree.excheck.js"></script>
+<script th:inline="javascript">
+    var id = [[${id}]];
+    function showData(values){
+
+        $('#title').html("标题:"+values.title);
+        $('#merchantId').html("商户:"+values.merchant);
+        $('#content').html("内容:"+values.content);
+
+        if(values.isDifferen==0)
+           $('#isDifferent').html("异业推送:是");
+        else
+            $('#isDifferent').html("异业推送:否");
+        $('#beginTime').html("开始时间:"+values.beginTime);
+        $('#endTime').html("结束时间:"+values.endTime);
+
+        $('#province').html("省:"+values.province);
+        $('#city').html("市:"+values.city);
+        $('#district').html("县:"+values.district);
+
+        $('#name').html("联系账号:"+values.name);
+        $('#tell').html("联系手机:"+values.tell);
+        $('#describe').html("活动描述:"+values.describe);
+
+        if(values.commissionTypeOne!=''){
+            $('#yongjin').html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按营销交易原单交易金额的"+values.commissionTypeOne+"% 收取");
+        }
+        if(values.commissionTypeTwo!=''){
+            $('#yongjin').html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按营销交易固定金额收取，即"+values.commissionTypeTwo+"元/笔");
+        }
+        if(values.commissionTypeThree!=''){
+            $('#yongjin').html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按外部营销补贴金额的"+values.commissionTypeThree+"%收取");
+        }
+        switch(values.couponType)
+        {
+            case "折扣券":
+                <!--<input name="preferentialWay" type="radio" value="固定" />固定-->
+                <!--<input name="preferentialWay" type="radio" value="随机" />随机-->
+                <!--折减<input type="text" size="5" id="valueOne" name="valueOne">%-->
+                <!--至<input type="text" size="5" id="valueTwo" name="valueTwo">%，-->
+                <!--单张券最高优惠<input type="text" size="6" id="valueTree" name="valueTree">元<br>-->
+                $('#quanma').html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;折扣券:"+values.preferentialWay+"  折减"+values.valueOne+"%至"+values.valueTwo+"%,单张券最高优惠"+values.valueTree+"元");
+                break;
+            case "满减券":
+                <!--<input name="couponType" type="radio" value="满减券" />满减券：-->
+                <!--<input name="preferentialWay" type="radio" value="固定" />固定-->
+                <!--<input name="preferentialWay" type="radio" value="随机" />随机-->
+                <!--满<input type="text" size="5" id="valueOne" name="valueOne">-->
+                <!--元起立减<input type="text" size="5" id="valueTwo" name="valueTwo">元至<input type="text" size="6" id="valueTree" name="valueTree">元<br>-->
+                $('#quanma').html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;满减券:"+values.preferentialWay+"  满"+values.valueOne+"元起立减"+values.valueTwo+"元至"+values.valueTree+"元");
+                break;
+            case "代金券":
+                <!--<input name="couponType" type="radio" value="代金券" />代金券：-->
+                <!--券面金额：<input type="text" size="5" id="valueOne" name="valueOne">%-->
+                <!--元，售卖价格：<input type="text" size="5" id="valueTwo" name="valueTwo">元<br>-->
+                $('#quanma').html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代金券：券面金额："+values.valueOne+"元，售卖价格："+values.valueTwo+"元");
+                break;
+            case "兑换券":
+                <!--<input name="couponType" type="radio" value="兑换券" />兑换券：-->
+                <!--凭券消费可兑换<input type="text" size="5" id="valueOne" name="valueOne">的优惠权益/服务<br>-->
+                $('#quanma').html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;兑换券：凭券消费可兑换"+values.valueOne+"的优惠权益/服务");
+                break;
+        }
+
+    }
+    $(function(){
+        $.post("/marketingPlan/getMarketingPlanInEnterpriseById",{id:id}).done(function(data){
+            showData(data);
+        });
+           getLabelTree();
+    }
+    );
+ function getLabelTree()
+ {
+     var setting = {
+         check: {
+             enable: true,
+             chkboxType: {"Y":"ps", "N":"ps"}
+         },
+         view: {
+             dblClickExpand: false
+         },
+         data: {
+             simpleData: {
+                 enable: true
+             }
+         }
+     };
+     $.post('/baseLabel/getBaseLabelTree', function (zNodes) {
+         $.fn.zTree.init($("#tree"), setting, zNodes);
+     });
+ }
+
+    function submitSetting()
+    {
+        var zTree = $.fn.zTree.getZTreeObj("tree"),
+        nodes = zTree.getCheckedNodes(true),
+        v = "";
+        alert(nodes);
+
+        // $("#myform").ajaxSubmit({
+        //     dataType: "json",
+        //     type: "POST",
+        //     url:"/marketingPlan/labelSetting",
+        //     success: function (data) {
+        //         alert(data);
+        //     }
+        // });
+
+    }
+</script>
+</html>

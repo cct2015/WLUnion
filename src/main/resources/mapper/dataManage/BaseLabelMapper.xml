@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.luer.dataManage.dao.BaseLabelMapper">
+    <resultMap id="BaseResultMap" type="com.luer.dataManage.bean.BaseLabel">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="text" property="text" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="keyss" property="keyss" jdbcType="VARCHAR"/>
+        <result column="parent_key" property="parentKey" jdbcType="VARCHAR"/>
+        <result column="leaf" property="leaf" jdbcType="INTEGER"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="is_valid" property="isValid" jdbcType="INTEGER"/>
+        <result column="order_no" property="orderNo" jdbcType="INTEGER"/>
+        <result column="is_must" property="isMust" jdbcType="INTEGER"/>
+        <result column="source" property="source" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="treeMap" type="com.luer.comm.bean.TreeViewItem">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="pId" property="pId" jdbcType="VARCHAR"/>
+        <result column="open" property="open" jdbcType="VARCHAR"/>
+
+    </resultMap>
+
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    id, text, description, keyss, parent_key, leaf, remark, is_valid, order_no, is_must,
+    source
+  </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.luer.dataManage.bean.BaseLabelExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from base_label
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from base_label
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from base_label
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.luer.dataManage.bean.BaseLabelExample">
+        delete from base_label
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.luer.dataManage.bean.BaseLabel">
+    insert into base_label (id, text, description,
+    keyss, parent_key, leaf,
+    remark, is_valid, order_no,
+    is_must, source)
+    values (#{id,jdbcType=VARCHAR}, #{text,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
+    #{keyss,jdbcType=VARCHAR}, #{parentKey,jdbcType=VARCHAR}, #{leaf,jdbcType=INTEGER},
+    #{remark,jdbcType=VARCHAR}, #{isValid,jdbcType=INTEGER}, #{orderNo,jdbcType=INTEGER},
+    #{isMust,jdbcType=INTEGER}, #{source,jdbcType=INTEGER})
+  </insert>
+    <insert id="insertSelective" parameterType="com.luer.dataManage.bean.BaseLabel">
+        insert into base_label
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="text != null">
+                text,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="keyss != null">
+                keyss,
+            </if>
+            <if test="parentKey != null">
+                parent_key,
+            </if>
+            <if test="leaf != null">
+                leaf,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="isValid != null">
+                is_valid,
+            </if>
+            <if test="orderNo != null">
+                order_no,
+            </if>
+            <if test="isMust != null">
+                is_must,
+            </if>
+            <if test="source != null">
+                source,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="text != null">
+                #{text,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="keyss != null">
+                #{keyss,jdbcType=VARCHAR},
+            </if>
+            <if test="parentKey != null">
+                #{parentKey,jdbcType=VARCHAR},
+            </if>
+            <if test="leaf != null">
+                #{leaf,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="isValid != null">
+                #{isValid,jdbcType=INTEGER},
+            </if>
+            <if test="orderNo != null">
+                #{orderNo,jdbcType=INTEGER},
+            </if>
+            <if test="isMust != null">
+                #{isMust,jdbcType=INTEGER},
+            </if>
+            <if test="source != null">
+                #{source,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.luer.dataManage.bean.BaseLabelExample"
+            resultType="java.lang.Integer">
+        select count(*) from base_label
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update base_label
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.text != null">
+                text = #{record.text,jdbcType=VARCHAR},
+            </if>
+            <if test="record.description != null">
+                description = #{record.description,jdbcType=VARCHAR},
+            </if>
+            <if test="record.keyss != null">
+                keyss = #{record.keyss,jdbcType=VARCHAR},
+            </if>
+            <if test="record.parentKey != null">
+                parent_key = #{record.parentKey,jdbcType=VARCHAR},
+            </if>
+            <if test="record.leaf != null">
+                leaf = #{record.leaf,jdbcType=INTEGER},
+            </if>
+            <if test="record.remark != null">
+                remark = #{record.remark,jdbcType=VARCHAR},
+            </if>
+            <if test="record.isValid != null">
+                is_valid = #{record.isValid,jdbcType=INTEGER},
+            </if>
+            <if test="record.orderNo != null">
+                order_no = #{record.orderNo,jdbcType=INTEGER},
+            </if>
+            <if test="record.isMust != null">
+                is_must = #{record.isMust,jdbcType=INTEGER},
+            </if>
+            <if test="record.source != null">
+                source = #{record.source,jdbcType=INTEGER},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update base_label
+        set id = #{record.id,jdbcType=VARCHAR},
+        text = #{record.text,jdbcType=VARCHAR},
+        description = #{record.description,jdbcType=VARCHAR},
+        keyss = #{record.keyss,jdbcType=VARCHAR},
+        parent_key = #{record.parentKey,jdbcType=VARCHAR},
+        leaf = #{record.leaf,jdbcType=INTEGER},
+        remark = #{record.remark,jdbcType=VARCHAR},
+        is_valid = #{record.isValid,jdbcType=INTEGER},
+        order_no = #{record.orderNo,jdbcType=INTEGER},
+        is_must = #{record.isMust,jdbcType=INTEGER},
+        source = #{record.source,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.luer.dataManage.bean.BaseLabel">
+        update base_label
+        <set>
+            <if test="text != null">
+                text = #{text,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="keyss != null">
+                keyss = #{keyss,jdbcType=VARCHAR},
+            </if>
+            <if test="parentKey != null">
+                parent_key = #{parentKey,jdbcType=VARCHAR},
+            </if>
+            <if test="leaf != null">
+                leaf = #{leaf,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="isValid != null">
+                is_valid = #{isValid,jdbcType=INTEGER},
+            </if>
+            <if test="orderNo != null">
+                order_no = #{orderNo,jdbcType=INTEGER},
+            </if>
+            <if test="isMust != null">
+                is_must = #{isMust,jdbcType=INTEGER},
+            </if>
+            <if test="source != null">
+                source = #{source,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.luer.dataManage.bean.BaseLabel">
+    update base_label
+    set text = #{text,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      keyss = #{keyss,jdbcType=VARCHAR},
+      parent_key = #{parentKey,jdbcType=VARCHAR},
+      leaf = #{leaf,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      order_no = #{orderNo,jdbcType=INTEGER},
+      is_must = #{isMust,jdbcType=INTEGER},
+      source = #{source,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+    select * from base_label
+  </select>
+    <delete id="deleteAll">
+    delete  from base_label
+  </delete>
+    <insert id="insertBaseLabelList" parameterType="java.util.List">
+        insert into base_label (id, text, description,
+        keyss, parent_key, leaf,
+        remark, is_valid, order_no,
+        is_must,source)
+        values
+        <foreach collection="list" item="label" index="index" separator=",">
+            (#{label.id},#{label.text},#{label.description},#{label.key},#{label.parentKey},#{label.leaf},#{label.remark},1,0,0,0
+            )
+        </foreach>
+    </insert>
+    <!--获得所有的有用的标签一级，去掉了汽车方面的-->
+    <select id="getOneStepLabelExclude" resultMap="BaseResultMap">
+    select * from base_label where leaf=0 and is_valid=1 and (parent_key is null or parent_key='') and <![CDATA[ keyss <>'prof']]> and  <![CDATA[ LOCATE('car',keyss)<1 ]]>
+     order by order_no asc
+</select>
+
+    <select id="getLabelChildren" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select * from base_label where parent_key=#{parentKey} order by order_no asc
+  </select>
+
+    <select id="get163LabelCity" resultMap="treeMap">
+    select keyss as id,parent_key as pId, text as name,0 as open from base_label where
+<![CDATA[ LOCATE('reside',keyss)>0]]>
+    and
+    <![CDATA[ parent_key<>'city_reside_grade']]>
+    order by order_no asc;
+  </select>
+
+    <select id="selectBySource" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select * from base_label where source=#{source} order by order_no asc
+  </select>
+    <select id="selectBySourceAndStep" resultMap="BaseResultMap">
+        select * from base_label where  (source=#{source}  and <![CDATA[ keyss <>'prof']]> and  <![CDATA[ LOCATE('car',keyss)<1 ]]>) and (parent_key ='' or parent_key is null)
+        order by order_no asc
+    </select>
+    <update id="prohibitAllBySource" parameterType="com.luer.dataManage.bean.BaseLabel">
+    update base_label
+    set
+    is_valid = #{isValid}
+    where
+    source = #{source}
+  </update>
+
+    <select id="selectByText" resultType="com.luer.dataManage.bean.BaseLabel">
+     select * from base_label where source=#{source} and text like #{selectValue} order by order_no asc
+  </select>
+    <select id="selectByTextHead" resultType="com.luer.dataManage.bean.BaseLabel">
+        select * from base_label where (source=#{source} and text like #{selectValue}) and (parent_key ='' or parent_key is null) order by order_no asc
+    </select>
+</mapper>

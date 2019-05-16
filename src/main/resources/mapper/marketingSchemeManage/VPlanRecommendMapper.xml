@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.luer.marketingSchemeManage.dao.VPlanRecommendMapper" >
+  <resultMap id="BaseResultMap" type="com.luer.marketingSchemeManage.bean.VPlanRecommend" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="is_different" property="isDifferent" jdbcType="INTEGER" />
+    <result column="from_merchant_id" property="fromMerchantId" jdbcType="VARCHAR" />
+    <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="country" property="country" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="describe1" property="describe1" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="tell" property="tell" jdbcType="VARCHAR" />
+    <result column="commission_type_one" property="commissionTypeOne" jdbcType="VARCHAR" />
+    <result column="commission_type_two" property="commissionTypeTwo" jdbcType="VARCHAR" />
+    <result column="commission_type_three" property="commissionTypeThree" jdbcType="VARCHAR" />
+    <result column="coupon_type" property="couponType" jdbcType="VARCHAR" />
+    <result column="preferential_way" property="preferentialWay" jdbcType="VARCHAR" />
+    <result column="value_one" property="valueOne" jdbcType="VARCHAR" />
+    <result column="value_two" property="valueTwo" jdbcType="VARCHAR" />
+    <result column="value_tree" property="valueTree" jdbcType="VARCHAR" />
+    <result column="other_descripe" property="otherDescripe" jdbcType="VARCHAR" />
+    <result column="usage_rule" property="usageRule" jdbcType="VARCHAR" />
+    <result column="support_store" property="supportStore" jdbcType="VARCHAR" />
+    <result column="coupons_number" property="couponsNumber" jdbcType="INTEGER" />
+    <result column="acceptmerchant" property="acceptmerchant" jdbcType="VARCHAR" />
+    <result column="merchant" property="merchant" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="merchant_id" property="merchantId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, title, content, is_different, from_merchant_id, district, city, province, country, 
+    remark, begin_time, end_time, describe1, name, tell, commission_type_one, commission_type_two,
+    commission_type_three, coupon_type, preferential_way, value_one, value_two, value_tree, 
+    other_descripe, usage_rule, support_store, coupons_number, acceptmerchant, merchant, 
+    status, add_time, merchant_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.luer.marketingSchemeManage.bean.VPlanRecommendExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from v_plan_recommend
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by add_time
+    </if>
+  </select>
+
+
+</mapper>

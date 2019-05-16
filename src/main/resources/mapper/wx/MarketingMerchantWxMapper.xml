@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.luer.wx.dao.MarketingMerchantWxMapper" >
+  <resultMap id="BaseResultMap" type="com.luer.wx.bean.MarketingMerchantWx" >
+    <id column="app_id" property="appId" jdbcType="VARCHAR" />
+    <result column="merchant_id" property="merchantId" jdbcType="VARCHAR" />
+    <result column="authorizer_refresh_token" property="authorizerRefreshToken" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    app_id, merchant_id, authorizer_refresh_token, update_date
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.luer.wx.bean.MarketingMerchantWxExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from marketing_merchant_wx
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from marketing_merchant_wx
+    where app_id = #{appId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from marketing_merchant_wx
+    where app_id = #{appId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.luer.wx.bean.MarketingMerchantWxExample" >
+    delete from marketing_merchant_wx
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.luer.wx.bean.MarketingMerchantWx"  >
+    insert into marketing_merchant_wx (app_id, merchant_id, authorizer_refresh_token, 
+      update_date)
+    values (#{record.appId,jdbcType=VARCHAR}, #{record.merchantId,jdbcType=VARCHAR}, #{record.authorizerRefreshToken,jdbcType=VARCHAR},
+      #{record.updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.luer.wx.bean.MarketingMerchantWx" >
+    insert into marketing_merchant_wx
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="appId != null" >
+        app_id,
+      </if>
+      <if test="merchantId != null" >
+        merchant_id,
+      </if>
+      <if test="authorizerRefreshToken != null" >
+        authorizer_refresh_token,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantId != null" >
+        #{merchantId,jdbcType=VARCHAR},
+      </if>
+      <if test="authorizerRefreshToken != null" >
+        #{authorizerRefreshToken,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.luer.wx.bean.MarketingMerchantWxExample" resultType="java.lang.Integer" >
+    select count(*) from marketing_merchant_wx
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+
+  <update id="updateByExampleSelective" parameterType="map" >
+    update marketing_merchant_wx
+    <set >
+      <if test="record.appId != null" >
+        app_id = #{record.appId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.merchantId != null" >
+        merchant_id = #{record.merchantId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authorizerRefreshToken != null" >
+        authorizer_refresh_token = #{record.authorizerRefreshToken,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update marketing_merchant_wx
+    set app_id = #{record.appId,jdbcType=VARCHAR},
+      merchant_id = #{record.merchantId,jdbcType=VARCHAR},
+      authorizer_refresh_token = #{record.authorizerRefreshToken,jdbcType=VARCHAR},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.luer.wx.bean.MarketingMerchantWx" >
+    update marketing_merchant_wx
+    <set >
+      <if test="merchantId != null" >
+        merchant_id = #{merchantId,jdbcType=VARCHAR},
+      </if>
+      <if test="authorizerRefreshToken != null" >
+        authorizer_refresh_token = #{authorizerRefreshToken,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where app_id = #{appId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.luer.wx.bean.MarketingMerchantWx" >
+    update marketing_merchant_wx
+    set authorizer_refresh_token=#{record.authorizerRefreshToken,jdbcType=VARCHAR}
+     where app_id=#{record.appId,jdbcType=VARCHAR}
+  </update>
+  <!--检查微信公众号是否存在设置-->
+  <select id="countIsExists" parameterType="com.luer.wx.bean.MarketingMerchantWx" resultType="java.lang.Integer" >
+    select count(*) from marketing_merchant_wx
+    where  app_id = #{record.appId,jdbcType=VARCHAR} and merchant_id = #{record.merchantId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getAuthorizerRefreshToken" parameterType="java.lang.String"  resultType="java.lang.String" >
+    select authorizer_refresh_token from marketing_merchant_wx where app_id = #{authorizerAppid,jdbcType=VARCHAR}
+  </select>
+
+  <!--获得某个商户的公众号列表-->
+  <select id="getMerchantWX" parameterType="java.lang.String" resultMap="BaseResultMap" >
+    select * from marketing_merchant_wx
+    where  merchant_id=#{merchantId,jdbcType=VARCHAR}
+  </select>
+<!--获取公众号数量-->
+  <select id="countNumber" parameterType="com.luer.wx.bean.MarketingMerchantWxExample" resultType="java.lang.Integer" >
+    select count(*) from marketing_merchant_wx
+  </select>
+</mapper>

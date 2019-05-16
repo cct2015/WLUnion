@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.luer.JD.dao.JdSkuListMapper" >
+  <resultMap id="BaseResultMap" type="com.luer.JD.bean.JdSkuList" >
+    <id column="order_id" property="orderId" jdbcType="BIGINT" />
+    <id column="sku_id" property="skuId" jdbcType="BIGINT" />
+    <result column="actual_cos_price" property="actualCosPrice" jdbcType="DOUBLE" />
+    <result column="actual_fee" property="actualFee" jdbcType="DOUBLE" />
+    <result column="commission_rate" property="commissionRate" jdbcType="DOUBLE" />
+    <result column="estimate_cos_price" property="estimateCosPrice" jdbcType="DOUBLE" />
+    <result column="estimate_fee" property="estimateFee" jdbcType="DOUBLE" />
+    <result column="final_rate" property="finalRate" jdbcType="DOUBLE" />
+    <result column="cid1" property="cid1" jdbcType="BIGINT" />
+    <result column="frozen_sku_num" property="frozenSkuNum" jdbcType="BIGINT" />
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="position_id" property="positionId" jdbcType="BIGINT" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="cid2" property="cid2" jdbcType="BIGINT" />
+    <result column="site_id" property="siteId" jdbcType="BIGINT" />
+    <result column="sku_name" property="skuName" jdbcType="VARCHAR" />
+    <result column="sku_num" property="skuNum" jdbcType="BIGINT" />
+    <result column="sku_return_num" property="skuReturnNum" jdbcType="BIGINT" />
+    <result column="sub_side_rate" property="subSideRate" jdbcType="DOUBLE" />
+    <result column="subsidy_rate" property="subsidyRate" jdbcType="DOUBLE" />
+    <result column="cid3" property="cid3" jdbcType="BIGINT" />
+    <result column="union_alias" property="unionAlias" jdbcType="VARCHAR" />
+    <result column="union_tag" property="unionTag" jdbcType="VARCHAR" />
+    <result column="union_traffic_group" property="unionTrafficGroup" jdbcType="INTEGER" />
+    <result column="valid_code" property="validCode" jdbcType="INTEGER" />
+    <result column="sub_union_id" property="subUnionId" jdbcType="VARCHAR" />
+    <result column="trace_type" property="traceType" jdbcType="INTEGER" />
+    <result column="pay_month" property="payMonth" jdbcType="INTEGER" />
+    <result column="pop_id" property="popId" jdbcType="BIGINT" />
+    <result column="ext1" property="ext1" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    order_id, sku_id, actual_cos_price, actual_fee, commission_rate, estimate_cos_price, 
+    estimate_fee, final_rate, cid1, frozen_sku_num, pid, position_id, price, cid2, site_id, 
+    sku_name, sku_num, sku_return_num, sub_side_rate, subsidy_rate, cid3, union_alias, 
+    union_tag, union_traffic_group, valid_code, sub_union_id, trace_type, pay_month, 
+    pop_id, ext1
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.luer.JD.bean.JdSkuListExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from jd_sku_list
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.luer.JD.bean.JdSkuListKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from jd_sku_list
+    where order_id = #{orderId,jdbcType=BIGINT}
+      and sku_id = #{skuId,jdbcType=BIGINT}
+  </select>
+  <select id="selectOrderSkuListByID" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" /> ,m.company_name as merchantName
+    from jd_sku_list j
+      left join marketing_merchant m on j.sub_union_id=m.id
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.luer.JD.bean.JdSkuListKey" >
+    delete from jd_sku_list
+    where order_id = #{orderId,jdbcType=BIGINT}
+      and sku_id = #{skuId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.luer.JD.bean.JdSkuListExample" >
+    delete from jd_sku_list
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.luer.JD.bean.JdSkuList" >
+    insert into jd_sku_list (order_id, sku_id, actual_cos_price, 
+      actual_fee, commission_rate, estimate_cos_price, 
+      estimate_fee, final_rate, cid1, 
+      frozen_sku_num, pid, position_id, 
+      price, cid2, site_id, sku_name, 
+      sku_num, sku_return_num, sub_side_rate, 
+      subsidy_rate, cid3, union_alias, 
+      union_tag, union_traffic_group, valid_code, 
+      sub_union_id, trace_type, pay_month, 
+      pop_id, ext1)
+    values (#{orderId,jdbcType=BIGINT}, #{skuId,jdbcType=BIGINT}, #{actualCosPrice,jdbcType=DOUBLE}, 
+      #{actualFee,jdbcType=DOUBLE}, #{commissionRate,jdbcType=DOUBLE}, #{estimateCosPrice,jdbcType=DOUBLE}, 
+      #{estimateFee,jdbcType=DOUBLE}, #{finalRate,jdbcType=DOUBLE}, #{cid1,jdbcType=BIGINT}, 
+      #{frozenSkuNum,jdbcType=BIGINT}, #{pid,jdbcType=VARCHAR}, #{positionId,jdbcType=BIGINT}, 
+      #{price,jdbcType=DOUBLE}, #{cid2,jdbcType=BIGINT}, #{siteId,jdbcType=BIGINT}, #{skuName,jdbcType=VARCHAR}, 
+      #{skuNum,jdbcType=BIGINT}, #{skuReturnNum,jdbcType=BIGINT}, #{subSideRate,jdbcType=DOUBLE}, 
+      #{subsidyRate,jdbcType=DOUBLE}, #{cid3,jdbcType=BIGINT}, #{unionAlias,jdbcType=VARCHAR}, 
+      #{unionTag,jdbcType=VARCHAR}, #{unionTrafficGroup,jdbcType=INTEGER}, #{validCode,jdbcType=INTEGER}, 
+      #{subUnionId,jdbcType=VARCHAR}, #{traceType,jdbcType=INTEGER}, #{payMonth,jdbcType=INTEGER}, 
+      #{popId,jdbcType=BIGINT}, #{ext1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.luer.JD.bean.JdSkuList" >
+    insert into jd_sku_list
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="skuId != null" >
+        sku_id,
+      </if>
+      <if test="actualCosPrice != null" >
+        actual_cos_price,
+      </if>
+      <if test="actualFee != null" >
+        actual_fee,
+      </if>
+      <if test="commissionRate != null" >
+        commission_rate,
+      </if>
+      <if test="estimateCosPrice != null" >
+        estimate_cos_price,
+      </if>
+      <if test="estimateFee != null" >
+        estimate_fee,
+      </if>
+      <if test="finalRate != null" >
+        final_rate,
+      </if>
+      <if test="cid1 != null" >
+        cid1,
+      </if>
+      <if test="frozenSkuNum != null" >
+        frozen_sku_num,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="positionId != null" >
+        position_id,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="cid2 != null" >
+        cid2,
+      </if>
+      <if test="siteId != null" >
+        site_id,
+      </if>
+      <if test="skuName != null" >
+        sku_name,
+      </if>
+      <if test="skuNum != null" >
+        sku_num,
+      </if>
+      <if test="skuReturnNum != null" >
+        sku_return_num,
+      </if>
+      <if test="subSideRate != null" >
+        sub_side_rate,
+      </if>
+      <if test="subsidyRate != null" >
+        subsidy_rate,
+      </if>
+      <if test="cid3 != null" >
+        cid3,
+      </if>
+      <if test="unionAlias != null" >
+        union_alias,
+      </if>
+      <if test="unionTag != null" >
+        union_tag,
+      </if>
+      <if test="unionTrafficGroup != null" >
+        union_traffic_group,
+      </if>
+      <if test="validCode != null" >
+        valid_code,
+      </if>
+      <if test="subUnionId != null" >
+        sub_union_id,
+      </if>
+      <if test="traceType != null" >
+        trace_type,
+      </if>
+      <if test="payMonth != null" >
+        pay_month,
+      </if>
+      <if test="popId != null" >
+        pop_id,
+      </if>
+      <if test="ext1 != null" >
+        ext1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="skuId != null" >
+        #{skuId,jdbcType=BIGINT},
+      </if>
+      <if test="actualCosPrice != null" >
+        #{actualCosPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="actualFee != null" >
+        #{actualFee,jdbcType=DOUBLE},
+      </if>
+      <if test="commissionRate != null" >
+        #{commissionRate,jdbcType=DOUBLE},
+      </if>
+      <if test="estimateCosPrice != null" >
+        #{estimateCosPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="estimateFee != null" >
+        #{estimateFee,jdbcType=DOUBLE},
+      </if>
+      <if test="finalRate != null" >
+        #{finalRate,jdbcType=DOUBLE},
+      </if>
+      <if test="cid1 != null" >
+        #{cid1,jdbcType=BIGINT},
+      </if>
+      <if test="frozenSkuNum != null" >
+        #{frozenSkuNum,jdbcType=BIGINT},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="positionId != null" >
+        #{positionId,jdbcType=BIGINT},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="cid2 != null" >
+        #{cid2,jdbcType=BIGINT},
+      </if>
+      <if test="siteId != null" >
+        #{siteId,jdbcType=BIGINT},
+      </if>
+      <if test="skuName != null" >
+        #{skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="skuNum != null" >
+        #{skuNum,jdbcType=BIGINT},
+      </if>
+      <if test="skuReturnNum != null" >
+        #{skuReturnNum,jdbcType=BIGINT},
+      </if>
+      <if test="subSideRate != null" >
+        #{subSideRate,jdbcType=DOUBLE},
+      </if>
+      <if test="subsidyRate != null" >
+        #{subsidyRate,jdbcType=DOUBLE},
+      </if>
+      <if test="cid3 != null" >
+        #{cid3,jdbcType=BIGINT},
+      </if>
+      <if test="unionAlias != null" >
+        #{unionAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="unionTag != null" >
+        #{unionTag,jdbcType=VARCHAR},
+      </if>
+      <if test="unionTrafficGroup != null" >
+        #{unionTrafficGroup,jdbcType=INTEGER},
+      </if>
+      <if test="validCode != null" >
+        #{validCode,jdbcType=INTEGER},
+      </if>
+      <if test="subUnionId != null" >
+        #{subUnionId,jdbcType=VARCHAR},
+      </if>
+      <if test="traceType != null" >
+        #{traceType,jdbcType=INTEGER},
+      </if>
+      <if test="payMonth != null" >
+        #{payMonth,jdbcType=INTEGER},
+      </if>
+      <if test="popId != null" >
+        #{popId,jdbcType=BIGINT},
+      </if>
+      <if test="ext1 != null" >
+        #{ext1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.luer.JD.bean.JdSkuListExample" resultType="java.lang.Integer" >
+    select count(*) from jd_sku_list
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update jd_sku_list
+    <set >
+      <if test="record.orderId != null" >
+        order_id = #{record.orderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.skuId != null" >
+        sku_id = #{record.skuId,jdbcType=BIGINT},
+      </if>
+      <if test="record.actualCosPrice != null" >
+        actual_cos_price = #{record.actualCosPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.actualFee != null" >
+        actual_fee = #{record.actualFee,jdbcType=DOUBLE},
+      </if>
+      <if test="record.commissionRate != null" >
+        commission_rate = #{record.commissionRate,jdbcType=DOUBLE},
+      </if>
+      <if test="record.estimateCosPrice != null" >
+        estimate_cos_price = #{record.estimateCosPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.estimateFee != null" >
+        estimate_fee = #{record.estimateFee,jdbcType=DOUBLE},
+      </if>
+      <if test="record.finalRate != null" >
+        final_rate = #{record.finalRate,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cid1 != null" >
+        cid1 = #{record.cid1,jdbcType=BIGINT},
+      </if>
+      <if test="record.frozenSkuNum != null" >
+        frozen_sku_num = #{record.frozenSkuNum,jdbcType=BIGINT},
+      </if>
+      <if test="record.pid != null" >
+        pid = #{record.pid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.positionId != null" >
+        position_id = #{record.positionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cid2 != null" >
+        cid2 = #{record.cid2,jdbcType=BIGINT},
+      </if>
+      <if test="record.siteId != null" >
+        site_id = #{record.siteId,jdbcType=BIGINT},
+      </if>
+      <if test="record.skuName != null" >
+        sku_name = #{record.skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.skuNum != null" >
+        sku_num = #{record.skuNum,jdbcType=BIGINT},
+      </if>
+      <if test="record.skuReturnNum != null" >
+        sku_return_num = #{record.skuReturnNum,jdbcType=BIGINT},
+      </if>
+      <if test="record.subSideRate != null" >
+        sub_side_rate = #{record.subSideRate,jdbcType=DOUBLE},
+      </if>
+      <if test="record.subsidyRate != null" >
+        subsidy_rate = #{record.subsidyRate,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cid3 != null" >
+        cid3 = #{record.cid3,jdbcType=BIGINT},
+      </if>
+      <if test="record.unionAlias != null" >
+        union_alias = #{record.unionAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unionTag != null" >
+        union_tag = #{record.unionTag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unionTrafficGroup != null" >
+        union_traffic_group = #{record.unionTrafficGroup,jdbcType=INTEGER},
+      </if>
+      <if test="record.validCode != null" >
+        valid_code = #{record.validCode,jdbcType=INTEGER},
+      </if>
+      <if test="record.subUnionId != null" >
+        sub_union_id = #{record.subUnionId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.traceType != null" >
+        trace_type = #{record.traceType,jdbcType=INTEGER},
+      </if>
+      <if test="record.payMonth != null" >
+        pay_month = #{record.payMonth,jdbcType=INTEGER},
+      </if>
+      <if test="record.popId != null" >
+        pop_id = #{record.popId,jdbcType=BIGINT},
+      </if>
+      <if test="record.ext1 != null" >
+        ext1 = #{record.ext1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update jd_sku_list
+    set order_id = #{record.orderId,jdbcType=BIGINT},
+      sku_id = #{record.skuId,jdbcType=BIGINT},
+      actual_cos_price = #{record.actualCosPrice,jdbcType=DOUBLE},
+      actual_fee = #{record.actualFee,jdbcType=DOUBLE},
+      commission_rate = #{record.commissionRate,jdbcType=DOUBLE},
+      estimate_cos_price = #{record.estimateCosPrice,jdbcType=DOUBLE},
+      estimate_fee = #{record.estimateFee,jdbcType=DOUBLE},
+      final_rate = #{record.finalRate,jdbcType=DOUBLE},
+      cid1 = #{record.cid1,jdbcType=BIGINT},
+      frozen_sku_num = #{record.frozenSkuNum,jdbcType=BIGINT},
+      pid = #{record.pid,jdbcType=VARCHAR},
+      position_id = #{record.positionId,jdbcType=BIGINT},
+      price = #{record.price,jdbcType=DOUBLE},
+      cid2 = #{record.cid2,jdbcType=BIGINT},
+      site_id = #{record.siteId,jdbcType=BIGINT},
+      sku_name = #{record.skuName,jdbcType=VARCHAR},
+      sku_num = #{record.skuNum,jdbcType=BIGINT},
+      sku_return_num = #{record.skuReturnNum,jdbcType=BIGINT},
+      sub_side_rate = #{record.subSideRate,jdbcType=DOUBLE},
+      subsidy_rate = #{record.subsidyRate,jdbcType=DOUBLE},
+      cid3 = #{record.cid3,jdbcType=BIGINT},
+      union_alias = #{record.unionAlias,jdbcType=VARCHAR},
+      union_tag = #{record.unionTag,jdbcType=VARCHAR},
+      union_traffic_group = #{record.unionTrafficGroup,jdbcType=INTEGER},
+      valid_code = #{record.validCode,jdbcType=INTEGER},
+      sub_union_id = #{record.subUnionId,jdbcType=VARCHAR},
+      trace_type = #{record.traceType,jdbcType=INTEGER},
+      pay_month = #{record.payMonth,jdbcType=INTEGER},
+      pop_id = #{record.popId,jdbcType=BIGINT},
+      ext1 = #{record.ext1,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.luer.JD.bean.JdSkuList" >
+    update jd_sku_list
+    <set >
+      <if test="actualCosPrice != null" >
+        actual_cos_price = #{actualCosPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="actualFee != null" >
+        actual_fee = #{actualFee,jdbcType=DOUBLE},
+      </if>
+      <if test="commissionRate != null" >
+        commission_rate = #{commissionRate,jdbcType=DOUBLE},
+      </if>
+      <if test="estimateCosPrice != null" >
+        estimate_cos_price = #{estimateCosPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="estimateFee != null" >
+        estimate_fee = #{estimateFee,jdbcType=DOUBLE},
+      </if>
+      <if test="finalRate != null" >
+        final_rate = #{finalRate,jdbcType=DOUBLE},
+      </if>
+      <if test="cid1 != null" >
+        cid1 = #{cid1,jdbcType=BIGINT},
+      </if>
+      <if test="frozenSkuNum != null" >
+        frozen_sku_num = #{frozenSkuNum,jdbcType=BIGINT},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="positionId != null" >
+        position_id = #{positionId,jdbcType=BIGINT},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="cid2 != null" >
+        cid2 = #{cid2,jdbcType=BIGINT},
+      </if>
+      <if test="siteId != null" >
+        site_id = #{siteId,jdbcType=BIGINT},
+      </if>
+      <if test="skuName != null" >
+        sku_name = #{skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="skuNum != null" >
+        sku_num = #{skuNum,jdbcType=BIGINT},
+      </if>
+      <if test="skuReturnNum != null" >
+        sku_return_num = #{skuReturnNum,jdbcType=BIGINT},
+      </if>
+      <if test="subSideRate != null" >
+        sub_side_rate = #{subSideRate,jdbcType=DOUBLE},
+      </if>
+      <if test="subsidyRate != null" >
+        subsidy_rate = #{subsidyRate,jdbcType=DOUBLE},
+      </if>
+      <if test="cid3 != null" >
+        cid3 = #{cid3,jdbcType=BIGINT},
+      </if>
+      <if test="unionAlias != null" >
+        union_alias = #{unionAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="unionTag != null" >
+        union_tag = #{unionTag,jdbcType=VARCHAR},
+      </if>
+      <if test="unionTrafficGroup != null" >
+        union_traffic_group = #{unionTrafficGroup,jdbcType=INTEGER},
+      </if>
+      <if test="validCode != null" >
+        valid_code = #{validCode,jdbcType=INTEGER},
+      </if>
+      <if test="subUnionId != null" >
+        sub_union_id = #{subUnionId,jdbcType=VARCHAR},
+      </if>
+      <if test="traceType != null" >
+        trace_type = #{traceType,jdbcType=INTEGER},
+      </if>
+      <if test="payMonth != null" >
+        pay_month = #{payMonth,jdbcType=INTEGER},
+      </if>
+      <if test="popId != null" >
+        pop_id = #{popId,jdbcType=BIGINT},
+      </if>
+      <if test="ext1 != null" >
+        ext1 = #{ext1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=BIGINT}
+      and sku_id = #{skuId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.luer.JD.bean.JdSkuList" >
+    update jd_sku_list
+    set actual_cos_price = #{actualCosPrice,jdbcType=DOUBLE},
+      actual_fee = #{actualFee,jdbcType=DOUBLE},
+      commission_rate = #{commissionRate,jdbcType=DOUBLE},
+      estimate_cos_price = #{estimateCosPrice,jdbcType=DOUBLE},
+      estimate_fee = #{estimateFee,jdbcType=DOUBLE},
+      final_rate = #{finalRate,jdbcType=DOUBLE},
+      cid1 = #{cid1,jdbcType=BIGINT},
+      frozen_sku_num = #{frozenSkuNum,jdbcType=BIGINT},
+      pid = #{pid,jdbcType=VARCHAR},
+      position_id = #{positionId,jdbcType=BIGINT},
+      price = #{price,jdbcType=DOUBLE},
+      cid2 = #{cid2,jdbcType=BIGINT},
+      site_id = #{siteId,jdbcType=BIGINT},
+      sku_name = #{skuName,jdbcType=VARCHAR},
+      sku_num = #{skuNum,jdbcType=BIGINT},
+      sku_return_num = #{skuReturnNum,jdbcType=BIGINT},
+      sub_side_rate = #{subSideRate,jdbcType=DOUBLE},
+      subsidy_rate = #{subsidyRate,jdbcType=DOUBLE},
+      cid3 = #{cid3,jdbcType=BIGINT},
+      union_alias = #{unionAlias,jdbcType=VARCHAR},
+      union_tag = #{unionTag,jdbcType=VARCHAR},
+      union_traffic_group = #{unionTrafficGroup,jdbcType=INTEGER},
+      valid_code = #{validCode,jdbcType=INTEGER},
+      sub_union_id = #{subUnionId,jdbcType=VARCHAR},
+      trace_type = #{traceType,jdbcType=INTEGER},
+      pay_month = #{payMonth,jdbcType=INTEGER},
+      pop_id = #{popId,jdbcType=BIGINT},
+      ext1 = #{ext1,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=BIGINT}
+      and sku_id = #{skuId,jdbcType=BIGINT}
+  </update>
+
+    <insert id="skulistInsert" parameterType="java.util.List">
+        replace into jd_sku_list (order_id, sku_id, actual_cos_price,
+        actual_fee, commission_rate, estimate_cos_price,
+        estimate_fee, final_rate, cid1,
+        frozen_sku_num, pid, position_id,
+        price, cid2, site_id, sku_name,
+        sku_num, sku_return_num, sub_side_rate,
+        subsidy_rate, cid3, union_alias,
+        union_tag, union_traffic_group, valid_code,
+        sub_union_id, trace_type, pay_month,
+        pop_id, ext1)
+        values
+        <foreach collection="list" item="jdSkuList" separator=",">
+            (#{jdSkuList.orderId,jdbcType=BIGINT}, #{jdSkuList.skuId,jdbcType=BIGINT},
+            #{jdSkuList.actualCosPrice,jdbcType=DOUBLE},
+            #{jdSkuList.actualFee,jdbcType=DOUBLE}, #{jdSkuList.commissionRate,jdbcType=DOUBLE},
+            #{jdSkuList.estimateCosPrice,jdbcType=DOUBLE},
+            #{jdSkuList.estimateFee,jdbcType=DOUBLE}, #{jdSkuList.finalRate,jdbcType=DOUBLE},
+            #{jdSkuList.cid1,jdbcType=BIGINT},
+            #{jdSkuList.frozenSkuNum,jdbcType=BIGINT}, #{jdSkuList.pid,jdbcType=VARCHAR},
+            #{jdSkuList.positionId,jdbcType=BIGINT},
+            #{jdSkuList.price,jdbcType=DOUBLE}, #{jdSkuList.cid2,jdbcType=BIGINT}, #{jdSkuList.siteId,jdbcType=BIGINT},
+            #{jdSkuList.skuName,jdbcType=VARCHAR},
+            #{jdSkuList.skuNum,jdbcType=BIGINT}, #{jdSkuList.skuReturnNum,jdbcType=BIGINT},
+            #{jdSkuList.subSideRate,jdbcType=DOUBLE},
+            #{jdSkuList.subsidyRate,jdbcType=DOUBLE}, #{jdSkuList.cid3,jdbcType=BIGINT},
+            #{jdSkuList.unionAlias,jdbcType=VARCHAR},
+            #{jdSkuList.unionTag,jdbcType=VARCHAR}, #{jdSkuList.unionTrafficGroup,jdbcType=INTEGER},
+            #{jdSkuList.validCode,jdbcType=INTEGER},
+            #{jdSkuList.subUnionId,jdbcType=VARCHAR}, #{jdSkuList.traceType,jdbcType=INTEGER},
+            #{jdSkuList.payMonth,jdbcType=INTEGER},
+            #{jdSkuList.popId,jdbcType=BIGINT}, #{jdSkuList.ext1,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+</mapper>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>问题汇总</title>
+    <style>
+        .login-dialog .modal-dialog {
+            width: 1000px;
+        }
+    </style>
+    <script>
+        function openWin(id) {
+            var dialog = BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_DEFAULT,
+                title: "<span style=\"color:#73879C\">问题方案标签查看</span>",
+                closable: false,
+                draggable: true,
+                cssClass: 'api-blacklist-form-add',
+                message: $('<div></div>').load('/marketingPlan/marketingPlanLabelSettingPage?id=' + id),//加载弹出页面
+                size: BootstrapDialog.SIZE_WIDE,//弹出框大小。
+                //数据回显
+                buttons: [{
+                    label: '关闭',
+                    icon: 'fa fa-close',
+                    action: function (dialogItself) {
+                        dialogItself.close();
+                    }
+                }]
+            });
+
+        }
+    </script>
+</head>
+<body class="nav-md">
+<div class="right_col" role="main">
+    <div class="container body" style="height: 100%">
+        <div class="x_title">
+            <h2>问题汇总</h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="row">
+            <div style="display: inline; width: 80px; float: left; margin-left: 10px; font-size: 15px; vertical-align: center; line-height:35px;">
+                问题来源：
+            </div>
+            </select>
+            <div style="display: inline; width: 135px; float: left">
+                <select class="form-control" id="source" name="source"
+                        style="height: 35px;width: 130px; font-size: 15px">
+                    <option value="-1" >全部</option>
+                    <option value="0" >系统内</option>
+                    <option value="1">商户</option>
+
+                </select>
+            </div>
+            <div style="display: inline; width: 100px; float: left; margin-left: 10px">
+                <input type="button" value="查 询" onclick="Query();" style="width: 90px;height: 35px; " class="icon-search"/>
+            </div>
+        </div>
+        <div class="x_content" style="margin-top: 10px">
+
+            <table id="jqGrid"></table>
+            <div id="jqGridPager"></div>
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function Query()
+    {
+        var source=$('#source').val();
+        $("#jqGrid").jqGrid('setGridParam',{
+            url:'../qamanagePlan/qamanagePlanInEnterprise',
+            postData:{source:source},
+            page:1
+        }).trigger("reloadGrid");
+    }
+    $(function () {
+        Init();
+
+    })
+
+    function Init() {
+        var source=$('#source').val();
+        jQuery("#jqGrid").jqGrid({
+            url: '../qamanagePlan/qamanagePlanInEnterprise',
+            styleUI: 'Bootstrap',
+            editurl: 'clientArray',
+            postData:{source:source},
+            datatype: "json",
+            mtype: "POST",
+            rownumbers: true,
+            colNames: ['ID', '问题', '回答', '添加时间', '添加人', '来源', '操作'],
+            colModel: [
+                {name: 'id', index: 'id', width: '30px', hidden: true},
+                {name: 'question', index: 'question', width: '130px'},//取这里面的值
+                {name: 'answer', index: 'answer',  hidden: true },
+                {name: 'addDate', index: 'addDate', width: '80px'},
+                {name: 'addUser', index: 'addUser', width: '80px'},
+                {
+                    name: 'source', index: 'source', width: '80px',
+                    formatter: function (grid_id, options, rowObject) {
+                        if (rowObject.source == 0) {
+                            return "系统维护人员";
+                        }
+                        else {
+                            return "系统使用商户";
+                        }
+                    },
+
+                },
+                {
+                    name: 'detail', index: 'detail', width: '150px',
+                    formatter: function (grid_id, options, rowObject) {
+                        Str = "<input type='button' onclick=\"Update('" + options.rowId + "');\"  value='修改' />";
+                        //修改和删除
+
+                        Str += "<input type='button' onclick=\"Delete('" + rowObject.id + "');\"  value='删除' />";
+                        return Str;
+                    }
+                }
+            ],
+            rowNum: 15,//可显示总页数
+            rowList: [20, 15, 30],//总页数选择
+            height: $(window).height,
+            autowidth: true,
+            pager: "#jqGridPager",
+            altRows: true,//显示为斑马线样式
+            hidegrid: false,//隐藏网格
+            viewrecords: true,//是否显示总页数
+            recordpos: 'left',//页数的位置
+            loadonce: false,//只加载一次
+            multiselect: false,//是否开启多部分选择
+            loadComplete: function () { //返回数据
+            },
+            jsonReader: {
+                root: "rows",
+                page: "page",
+                total: "total",
+                records: "records",
+                repeatitems: false,//返回是否重复、读取colmodel的值
+                cell: "cell",
+                id: "id"
+            }
+        });
+
+        $('#jqGrid').jqGrid('navGrid', '#jqGridPager', {
+            refresh: true,
+            edit: false,
+            add: false,
+            del: false,
+            search: false,
+            position:"right"
+        }).navButtonAdd('#jqGridPager',{
+            caption: "添加",
+            buttonicon: "glyphicon-plus",
+            onClickButton: openDialog4Adding,
+            position: "last"
+        });
+    }
+    var openDialog4Adding = function () {
+        var dialog = BootstrapDialog.show({ //会话
+            type: BootstrapDialog.TYPE_DEFAULT,
+            title: "<span style=\"color: #ab8ce4\">新增问题</span>",
+            closable: false,//可关闭
+            draggable: true,//拖动
+            cssClass: 'login-dialog',
+            message: $('<div></div>').load('../showQuestion/look'),//加载弹出页面
+            cssClass: 'login-dialog',
+            size: BootstrapDialog.SIZE_WIDE,//弹出框大小。
+
+            buttons: [{
+                id: 'btn-form-submit',
+                label: '确定添加',
+                icon: 'fa fa-check-circle',
+                cssClass: 'btn-primary',
+                action: function (dialogItself) {  //点击事件
+                    var answer=$('#summernote').summernote('code');
+                    var json = {
+                        id: $.trim($("#id").val()),
+                        question:$.trim($("#question").val()),
+                        answer: answer,
+                        status:$.trim($("#status").val())
+
+                    }
+
+
+
+                  // var Str=JSON.stringify(json);
+                  //   alert(Str);
+                    //
+                    // $("#myform").bootstrapValidator({
+                    //         feedbackIcons:{
+                    //             valid:'glyphicon glyphicon-ok',
+                    //             invalid:'glyphicon glyphicon-remove',
+                    //             validating:'glyphicon glyphicon-refresh'
+                    //         },
+                    //     fields:
+                    //         {
+                    //             question: {
+                    //                 validators: {
+                    //                     notEmpty: {
+                    //                         message: '问题不能为空！'
+                    //                     }
+                    //                 }
+                    //             },
+                    //             answer: {
+                    //                 validators: {
+                    //                     notEmpty: {
+                    //                         message: '回答不能为空！'
+                    //
+                    //                     }
+                    //                 }
+                    //             }
+                    //         }
+                    //
+                    // });
+                    //     var  bootstrapValidator=$("#myform").data('bootstrapValidator');
+                    //     bootstrapValidator.validate();
+                    //     if (!$('#myform').data('bootstrapValidator').isValid()) {
+                    //             getCode("check",msg)
+                    //             return;
+                    //     }
+                    //
+                    //
+                    $.ajax({
+                        url:'../qamanagePlan/addPlanQAManage',
+                        data:json,
+                        dataType:"json",
+                        type:'POST',
+                        cache:false,//是否储存
+                        success:function (data) {
+                            if (data != null) {
+                                dialogItself.close();
+                                getCode('add','添加成功');
+                                $('#jqGrid').trigger('reloadGrid');
+                            }else{
+                                getCode('add','添加失败');
+                            }
+                        },
+                        error:function (e) {
+                            getCode('add','系统ajax交互错误')
+                        }
+                    })
+                }
+            },
+                {
+                    label: '关闭',
+                    icon: 'fa fa-close',//图标
+                    action: function (dialogItself) { //对话本身数值
+                        dialogItself.close();
+                    }
+                }]
+        });
+    }
+
+
+
+
+
+
+    function Delete(id) {  //删除的
+        myConfirm("../qamanagePlan/deleteMarketingPlanDotInEnterprise", id,"../Look/look");
+    }
+
+    function Update(selectedRowId) {//修改的
+        debugger;
+        //获得当前行各项属性
+        var values = $("#jqGrid").jqGrid("getRowData", selectedRowId);
+
+        var dialog = BootstrapDialog.show({
+            type: BootstrapDialog.TYPE_DEFAULT,
+            title: "<span style=\"color: #ab8ce4\">数据详细</span><input type='hidden' id='detail' value='\"+values.id+\"' />",
+            closable: false,
+            draggable: true,
+            cssClass: 'api-blacklist-form-add',
+            message: $('<div></div>').load('../showQuestion/look'),//UpdateQAInfo这个是跳转的的页面
+            cssClass: 'login-dialog',
+            size: BootstrapDialog.SIZE_WIDE,//弹出框大小。弹框跳转页面
+            onshown: function () {
+                $('#id').val(values.id);
+                $('#question').val(values.question);
+                $('#answer').val(values.answer);
+                // var a=$.trim($("#myform").find("#answer").val());
+                $('#summernote').summernote('code',$.trim($("#myform").find("#answer").val()));
+            },
+            buttons: [{
+                label: '提交',
+                icon: 'fa fa-close',
+                icon: 'fa fa-check-circle',
+                cssClass: 'btn-primary',
+
+                action: function (dialogItself) {
+                    // var a=$.trim($("#myform").find("#id").val());
+                    // $('#summernote').summernote('code',a);
+                    var answer=$('#summernote').summernote('code');
+                    var json = {
+                        id: $.trim($("#myform").find("#id").val()),
+                        question:$.trim($("#question").val()),
+                        answer:answer,
+                        status:$.trim($("#status").val())
+
+                    }
+                    console.log(json);
+                    $.ajax({
+                        url:"../qamanagePlan/updateQAManage",
+                        data:json,
+                        dataType:"json",
+                        type:'POST',
+                        cache:false,
+                        success:function (response) {
+
+                            if (response!=null) {
+                                dialogItself.close();
+                                getCode('update','修改成功');
+                            $('#jqGrid').trigger('reloadGrid');
+                            }else{
+                                getCode('update','修改失败');
+                            }
+                        },
+                        error:function (textStatus, e) {
+                            getCode('update','系统ajax交互错误')
+                        }
+                    })
+                }
+            },
+                {
+                    label: '关闭',
+                    icon: 'fa fa-close',
+                    action: function (dialogItself) { //对话本身数值
+                        dialogItself.close();
+                    }
+            }]
+        });
+    }
+
+
+// $(document).ready(function () {
+//     $.ajax({
+//         url : "clause/gettypeName.do",
+//         dataType : "json",
+//         success : function(data) {
+//             if (data && data.rows.length > 0) {
+//                 project = data.rows;
+//                 addOptions(project);
+//             }
+//         }
+//     });
+//
+//
+//     function addOptions(project) {
+//
+//         var pro = $('#typeName');
+//
+//         var options = '<option value ="0">请选择</option>';
+//         $(project).each(function() {
+//             options += '<option value="' + this.id + '" >' + this.typeName + '</option>';
+//
+//         });
+//
+//         pro.append(options);
+// })
+
+        function Qt() {
+            $.ajax({
+                url: "/qamanagePlan/selecttestall",
+                dataType: "json",
+                success: function (data) {
+                     var arr = JSON.stringify(data);
+                    alert(arr);
+                    $("#typeName").prepend("<option value='0'>请选择</option>")
+                    for (var i=1;i<data.length;i++){
+                        $("#typeName").append("<option value='"+data[i].id+"'>"+data[i].question+"</option>")
+                    }
+
+                }
+            })
+
+        }
+
+    // function addOptions(project) {
+    //     var pro = $('#typeName');
+    //     var options = '<option value ="0">请选择</option>';
+    //     $(project).each(function(index ,obj) {
+    //         // options += '<option value="' + this.id + '" >' + this.typeName + '</option>';
+    //          alert(index+obj.id+obj.question+obj.answer+obj.addDate+obj.addUser+obj.source);
+    //         // options += '<option value="' + index+obj.id+obj.question+obj.answer+obj.addDate+obj.addUser+obj.source+ '" ></option>'
+    //
+    //     });
+    //     pro.append(options);
+    // }
+</script>
+
+</body>
+</html>
